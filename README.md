@@ -1,3 +1,7 @@
+## This repo contains only feature / bugfix branches and the `merged` branch contains all of them merged into the main `develop` branch. If you are looking for the main Phobos repository, head [here](https://github.com/Phobos-developers/Phobos/).
+
+---------
+
 ![Phobos YR Engine Extension](logo.png)
 
 [![Github All Releases](https://img.shields.io/github/downloads/Phobos-developers/Phobos/total.svg)](https://github.com/Phobos-developers/Phobos/releases)
