@@ -4,6 +4,7 @@
 #include <ScenarioClass.h>
 #include <TerrainClass.h>
 
+#include <Ext/Anim/Body.h>
 #include <Ext/Building/Body.h>
 #include <Ext/Bullet/Body.h>
 #include <Ext/WarheadType/Body.h>
@@ -340,7 +341,6 @@ DEFINE_HOOK(0x6FC5C7, TechnoClass_CanFire_OpenTopped, 0x6)
 {
 	enum { Illegal = 0x6FC86A, OutOfRange = 0x6FC0DF, Continue = 0x6FC5D5 };
 
-	// GET(TechnoClass*, pThis, ESI);
 	GET(TechnoClass*, pTransport, EAX);
 
 	auto const pTypeExt = TechnoTypeExt::ExtMap.Find(pTransport->GetTechnoType());
@@ -539,6 +539,70 @@ DEFINE_HOOK(0x6FF905, TechnoClass_FireAt_FireOnce, 0x6)
 
 		if (!pWeaponExt->FireOnce_ResetSequence)
 			TechnoExt::ExtMap.Find(pInf)->SkipTargetChangeResetSequence = true;
+	}
+
+	return 0;
+}
+
+static void __forceinline CreateDelayedFireAnim(TechnoClass* pThis, AnimTypeClass* pAnimType, int weaponIndex, bool attach, bool center)
+{
+	if (pAnimType)
+	{
+		auto coords = pThis->GetCenterCoords();
+
+		if (!center)
+			coords = pThis->GetFLH(weaponIndex, coords);
+
+		if (auto const pAnim = GameCreate<AnimClass>(pAnimType, coords))
+		{
+			if (attach)
+				pAnim->SetOwnerObject(pThis);
+
+			auto const pAnimExt = AnimExt::ExtMap.Find(pAnim);
+			pAnim->Owner = pThis->Owner;
+			pAnimExt->SetInvoker(pThis);
+		}
+	}
+}
+
+DEFINE_HOOK(0x6FDDC0, TechnoClass_FireAt_DelayedFire, 0x6)
+{
+	enum { SkipFiring = 0x6FDE03 };
+
+	GET(TechnoClass* const, pThis, ESI);
+	GET(WeaponTypeClass*, pWeapon, EBX);
+	GET_BASE(int, weaponIndex, 0xC);
+
+	auto const pWeaponExt = WeaponTypeExt::ExtMap.Find(pWeapon);
+	auto const pExt = TechnoExt::ExtMap.Find(pThis);
+	auto& timer = pExt->DelayedFireTimer;
+
+	if (pExt->DelayedFireWeaponIndex >= 0 && pExt->DelayedFireWeaponIndex != weaponIndex)
+	{
+		timer.Stop();
+		pExt->DelayedFireWeaponIndex = -1;
+	}
+
+	if (pWeaponExt->DelayedFire_Duration > 0)
+	{
+		if (pThis->WhatAmI() == AbstractType::Infantry && pWeaponExt->DelayedFire_PauseFiringSequence)
+			return 0;
+
+		if (timer.InProgress())
+			return SkipFiring;
+
+		if (!timer.HasStarted())
+		{
+			pExt->DelayedFireWeaponIndex = weaponIndex;
+			timer.Start(pWeaponExt->DelayedFire_Duration);
+			CreateDelayedFireAnim(pThis, pWeaponExt->DelayedFire_Animation, weaponIndex, pWeaponExt->DelayedFire_AnimIsAttached, pWeaponExt->DelayedFire_CenterAnimOnFirer);
+
+			return SkipFiring;
+		}
+		else
+		{
+			timer.Stop();
+		}
 	}
 
 	return 0;
@@ -783,7 +847,7 @@ DEFINE_HOOK(0x5206D2, InfantryClass_FiringAI_SetContext, 0x6)
 	return 0;
 }
 
-DEFINE_HOOK(0x5209AF, InfantryClass_FiringAI_BurstDelays, 0x6)
+DEFINE_HOOK(0x5209AF, InfantryClass_FiringAI, 0x6)
 {
 	enum { Continue = 0x5209CD, ReturnFromFunction = 0x520AD9 };
 
@@ -795,6 +859,38 @@ DEFINE_HOOK(0x5209AF, InfantryClass_FiringAI_BurstDelays, 0x6)
 	int weaponIndex = FiringAITemp::weaponIndex;
 	auto const pWeapon = pThis->GetWeapon(weaponIndex)->WeaponType;
 	auto const pWeaponExt = WeaponTypeExt::ExtMap.Find(pWeapon);
+	auto const pExt = TechnoExt::ExtMap.Find(pThis);
+	auto& timer = pExt->DelayedFireTimer;
+
+	if (pExt->DelayedFireWeaponIndex >= 0 && pExt->DelayedFireWeaponIndex != weaponIndex)
+	{
+		timer.Stop();
+		pExt->DelayedFireWeaponIndex = -1;
+		pExt->AnimationPaused = false;
+	}
+
+	if (pWeaponExt->DelayedFire_PauseFiringSequence && pWeaponExt->DelayedFire_Duration > 0)
+	{
+		if (pThis->Animation.Value == firingFrame)
+			pExt->AnimationPaused = true;
+
+		if (!timer.HasStarted())
+		{
+			pExt->DelayedFireWeaponIndex = weaponIndex;
+			timer.Start(pWeaponExt->DelayedFire_Duration);
+			CreateDelayedFireAnim(pThis, pWeaponExt->DelayedFire_Animation, weaponIndex, pWeaponExt->DelayedFire_AnimIsAttached, pWeaponExt->DelayedFire_CenterAnimOnFirer);
+			return ReturnFromFunction;
+		}
+		else if (timer.InProgress())
+		{
+			return ReturnFromFunction;
+		}
+
+		if (timer.Completed())
+			timer.Stop();
+
+		pExt->AnimationPaused = false;
+	}
 
 	// Calculate cumulative burst delay as well cumulative delay after next shot (projected delay).
 	if (pWeaponExt && pWeaponExt->Burst_FireWithinSequence)
@@ -828,10 +924,7 @@ DEFINE_HOOK(0x5209AF, InfantryClass_FiringAI_BurstDelays, 0x6)
 
 			// If projected frame for firing next shot goes beyond the sequence frame count, cease firing after this shot and start rearm timer.
 			if (firingFrame + projectedDelay > frameCount)
-			{
-				auto const pExt = TechnoExt::ExtMap.Find(pThis);
 				pExt->ForceFullRearmDelay = true;
-			}
 		}
 
 		R->EAX(weaponIndex); // Reuse the weapon index to save some time.

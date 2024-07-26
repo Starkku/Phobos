@@ -1655,6 +1655,22 @@ Burst.Delays=-1                 ; integer - burst delays (comma-separated) for s
 Burst.FireWithinSequence=false  ; boolean
 ```
 
+### Delayed firing
+
+- It is possible to have any weapon fire with a delay by setting `DelayedFire.Duration` on a WeaponType to number higher than 0.
+  - `DelayedFire.Animation` can be used to define animation to create when the delay timer starts. If `DelayedFire.AnimIsAttached` is set to true, the animation is attached to the firing TechnoType and if `DelayedFire.CenterAnimOnFirer` is set the animation is created at the firer's center rather than at the firing coordinates.
+  - If the weapon was fired by InfantryType and `DelayedFire.PauseFiringSequence` is set to true, the infantry's firing sequence animation is paused when it hits the firing frame defined by `FireUp/Prone` or `SecondaryFire/Prone` in its `artmd.ini` entry until the delay timer has expired.
+
+In `rulesmd.ini`:
+```ini
+[SOMEWEAPON]                           ; WeaponType
+DelayedFire.Duration=0                 ; integer, game frames
+DelayedFire.Animation=                 ; Animation
+DelayedFire.AnimIsAttached=true        ; boolean
+DelayedFire.CenterAnimOnFirer=false    ; boolean
+DelayedFire.PauseFiringSequence=false  ; boolean
+```
+
 ### Extra warhead detonations
 
 - It is now possible to have same weapon detonate multiple Warheads on impact by listing `ExtraWarheads`. The warheads are detonated at same location as the main one, after it in listed order. This only works in cases where a projectile has been fired by a weapon and still remembers it when it is detonated (due to currently existing technical limitations, this excludes `AirburstWeapon`).
