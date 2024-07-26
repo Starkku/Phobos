@@ -500,6 +500,9 @@ void TechnoExt::ExtData::Serialize(T& Stm)
 		.Process(this->HasRemainingWarpInDelay)
 		.Process(this->LastWarpInDelay)
 		.Process(this->IsBeingChronoSphered)
+		.Process(this->AnimationPaused)
+		.Process(this->DelayedFireTimer)
+		.Process(this->DelayedFireWeaponIndex)
 		;
 }
 
