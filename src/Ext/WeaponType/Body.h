@@ -59,7 +59,7 @@ public:
 		Valueable<bool> AttachEffect_CheckOnFirer;
 		Valueable<bool> AttachEffect_IgnoreFromSameSource;
 		Valueable<bool> KickOutPassengers;
-		Valueable<int> DelayedFire_Duration;
+		Nullable<PartialVector2D<int>> DelayedFire_Duration;
 		Valueable<AnimTypeClass*> DelayedFire_Animation;
 		Valueable<bool> DelayedFire_AnimIsAttached;
 		Valueable<bool> DelayedFire_CenterAnimOnFirer;
@@ -104,7 +104,7 @@ public:
 			, AttachEffect_CheckOnFirer { false }
 			, AttachEffect_IgnoreFromSameSource { false }
 			, KickOutPassengers { true }
-			, DelayedFire_Duration { 0 }
+			, DelayedFire_Duration {}
 			, DelayedFire_Animation {}
 			, DelayedFire_AnimIsAttached { true }
 			, DelayedFire_CenterAnimOnFirer { false }
