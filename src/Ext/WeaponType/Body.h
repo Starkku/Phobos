@@ -63,6 +63,7 @@ public:
 		Valueable<AnimTypeClass*> DelayedFire_Animation;
 		Valueable<bool> DelayedFire_AnimIsAttached;
 		Valueable<bool> DelayedFire_CenterAnimOnFirer;
+		Valueable<bool> DelayedFire_RemoveAnimOnNoDelay;
 		Valueable<bool> DelayedFire_PauseFiringSequence;
 
 		ExtData(WeaponTypeClass* OwnerObject) : Extension<WeaponTypeClass>(OwnerObject)
@@ -108,6 +109,7 @@ public:
 			, DelayedFire_Animation {}
 			, DelayedFire_AnimIsAttached { true }
 			, DelayedFire_CenterAnimOnFirer { false }
+			, DelayedFire_RemoveAnimOnNoDelay { false }
 			, DelayedFire_PauseFiringSequence { false }
 		{ }
 
