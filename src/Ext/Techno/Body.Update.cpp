@@ -36,7 +36,7 @@ void TechnoExt::ExtData::OnEarlyUpdate()
 
 	// Reset delayed fire timers if have no target and not attacking.
 	if (!pThis->Target && pThis->CurrentMission != Mission::Attack)
-		this->DelayedFireTimer.Stop();
+		this->ResetDelayedFireTimer();
 
 	if (this->CheckDeathConditions())
 		return;

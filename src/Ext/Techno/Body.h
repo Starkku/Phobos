@@ -59,6 +59,7 @@ public:
 		bool AnimationPaused;
 		int DelayedFireWeaponIndex;
 		CDTimerClass DelayedFireTimer;
+		AnimClass* CurrentDelayedFireAnim;
 
 		ExtData(TechnoClass* OwnerObject) : Extension<TechnoClass>(OwnerObject)
 			, TypeExtData { nullptr }
@@ -94,6 +95,7 @@ public:
 			, AnimationPaused { false }
 			, DelayedFireWeaponIndex { -1 }
 			, DelayedFireTimer {}
+			, CurrentDelayedFireAnim { nullptr }
 		{ }
 
 		void OnEarlyUpdate();
@@ -117,6 +119,7 @@ public:
 		void UpdateSelfOwnedAttachEffects();
 		bool HasAttachedEffects(std::vector<AttachEffectTypeClass*> attachEffectTypes, bool requireAll, bool ignoreSameSource, TechnoClass* pInvoker, AbstractClass* pSource, std::vector<int> const* minCounts, std::vector<int> const* maxCounts) const;
 		int GetAttachedEffectCumulativeCount(AttachEffectTypeClass* pAttachEffectType, bool ignoreSameSource = false, TechnoClass* pInvoker = nullptr, AbstractClass* pSource = nullptr) const;
+		void ResetDelayedFireTimer();
 
 		virtual ~ExtData() override;
 		virtual void InvalidatePointer(void* ptr, bool bRemoved) override { }
