@@ -56,7 +56,7 @@ public:
 		bool HasRemainingWarpInDelay;          // Converted from object with Teleport Locomotor to one with a different Locomotor while still phasing in OR set if ChronoSphereDelay > 0.
 		int LastWarpInDelay;                   // Last-warp in delay for this unit, used by HasCarryoverWarpInDelay.
 		bool IsBeingChronoSphered;             // Set to true on units currently being ChronoSphered, does not apply to Ares-ChronoSphere'd buildings or Chrono reinforcements.
-		bool AnimationPaused;
+		bool FiringSequencePaused;
 		int DelayedFireWeaponIndex;
 		CDTimerClass DelayedFireTimer;
 		AnimClass* CurrentDelayedFireAnim;
@@ -92,7 +92,7 @@ public:
 			, HasRemainingWarpInDelay { false }
 			, LastWarpInDelay { 0 }
 			, IsBeingChronoSphered { false }
-			, AnimationPaused { false }
+			, FiringSequencePaused { false }
 			, DelayedFireWeaponIndex { -1 }
 			, DelayedFireTimer {}
 			, CurrentDelayedFireAnim { nullptr }

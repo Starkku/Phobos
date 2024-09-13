@@ -623,7 +623,7 @@ DEFINE_HOOK(0x6FABC4, TechnoClass_AI_AnimationPaused, 0x6)
 
 	auto const pExt = TechnoExt::ExtMap.Find(pThis);
 
-	if (pExt->AnimationPaused)
+	if (pExt->FiringSequencePaused)
 		return SkipGameCode;
 
 	return 0;
