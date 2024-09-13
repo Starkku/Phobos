@@ -1662,7 +1662,8 @@ Burst.FireWithinSequence=false  ; boolean
     - If `DelayedFire.AnimIsAttached` is set to true, the animation is attached to the firing TechnoType. If `DelayedFire.RemoveAnimOnNoDelay` is also set to true the animation is removed when the duration expires or firing is interrupted regardless of its remaining lifetime.
     - If `DelayedFire.CenterAnimOnFirer` is set the animation is created at the firer's center rather than at the firing coordinates.
   - If the weapon was fired by InfantryType and `DelayedFire.PauseFiringSequence` is set to true, the infantry's firing sequence animation is paused when it hits the firing frame defined by `FireUp/Prone` or `SecondaryFire/Prone` in its `artmd.ini` entry until the delay timer has expired.
-
+  - If the weapon has `Burst` > 1 and `DelayedFire.OnlyOnInitialBurst` set to true, the delay occurs only before the initial burst shot. Note that if using Ares, `Burst` index does not reset if firing is interrupted or the firer loses target, meaning it will be able to resume firing without waiting for the delay.
+  
 In `rulesmd.ini`:
 ```ini
 [SOMEWEAPON]                           ; WeaponType
@@ -1672,6 +1673,7 @@ DelayedFire.AnimIsAttached=true        ; boolean
 DelayedFire.CenterAnimOnFirer=false    ; boolean
 DelayedFire.RemoveAnimOnNoDelay=false  ; boolean
 DelayedFire.PauseFiringSequence=false  ; boolean
+DelayedFire.OnlyOnInitialBurst=false   ; boolean
 ```
 
 ### Extra warhead detonations
