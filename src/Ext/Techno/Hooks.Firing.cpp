@@ -841,6 +841,17 @@ namespace FiringAITemp
 	int weaponIndex;
 }
 
+DEFINE_HOOK(0x5206B7, InfantryClass_FiringAI_Entry, 0x6)
+{
+	GET(InfantryClass*, pThis, EBP);
+
+	if (!pThis->Target || !pThis->IsFiring)
+		TechnoExt::ExtMap.Find(pThis)->FiringSequencePaused = false;
+
+	return 0;
+}
+
+
 DEFINE_HOOK(0x5206D2, InfantryClass_FiringAI_SetContext, 0x6)
 {
 	GET(int, weaponIndex, EDI);
@@ -868,13 +879,13 @@ DEFINE_HOOK(0x5209AF, InfantryClass_FiringAI, 0x6)
 	if (pExt->DelayedFireWeaponIndex >= 0 && pExt->DelayedFireWeaponIndex != weaponIndex)
 	{
 		pExt->ResetDelayedFireTimer();
-		pExt->AnimationPaused = false;
+		pExt->FiringSequencePaused = false;
 	}
 
 	if (pWeaponExt->DelayedFire_PauseFiringSequence && pWeaponExt->DelayedFire_Duration.isset())
 	{
 		if (pThis->Animation.Value == firingFrame)
-			pExt->AnimationPaused = true;
+			pExt->FiringSequencePaused = true;
 
 		if (!timer.HasStarted())
 		{
@@ -891,7 +902,7 @@ DEFINE_HOOK(0x5209AF, InfantryClass_FiringAI, 0x6)
 		if (timer.Completed())
 			pExt->ResetDelayedFireTimer();
 
-		pExt->AnimationPaused = false;
+		pExt->FiringSequencePaused = false;
 	}
 
 	// Calculate cumulative burst delay as well cumulative delay after next shot (projected delay).
