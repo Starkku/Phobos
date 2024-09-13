@@ -60,6 +60,7 @@ public:
 		int DelayedFireWeaponIndex;
 		CDTimerClass DelayedFireTimer;
 		AnimClass* CurrentDelayedFireAnim;
+		OptionalStruct<CoordStruct, true> CustomFiringOffset; // If set any calls to GetFLH() will use this coordinate as FLH.
 
 		ExtData(TechnoClass* OwnerObject) : Extension<TechnoClass>(OwnerObject)
 			, TypeExtData { nullptr }
@@ -96,6 +97,7 @@ public:
 			, DelayedFireWeaponIndex { -1 }
 			, DelayedFireTimer {}
 			, CurrentDelayedFireAnim { nullptr }
+			, CustomFiringOffset {}
 		{ }
 
 		void OnEarlyUpdate();

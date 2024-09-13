@@ -1660,6 +1660,7 @@ Burst.FireWithinSequence=false  ; boolean
 - It is possible to have any weapon fire with a delay by setting `DelayedFire.Duration` on a WeaponType - it supports a single integer or two comma-separated ones for a random range to pick value from.
   - `DelayedFire.Animation` can be used to define animation to create when the delay timer starts.
     - If `DelayedFire.AnimIsAttached` is set to true, the animation is attached to the firing TechnoType. If `DelayedFire.RemoveAnimOnNoDelay` is also set to true the animation is removed when the duration expires or firing is interrupted regardless of its remaining lifetime.
+    - `DelayedFire.AnimOffset` can be used to override the weapon's firing coordinates / FLH for the animation's position.
     - If `DelayedFire.CenterAnimOnFirer` is set the animation is created at the firer's center rather than at the firing coordinates.
   - If the weapon was fired by InfantryType and `DelayedFire.PauseFiringSequence` is set to true, the infantry's firing sequence animation is paused when it hits the firing frame defined by `FireUp/Prone` or `SecondaryFire/Prone` in its `artmd.ini` entry until the delay timer has expired.
   - If the weapon has `Burst` > 1 and `DelayedFire.OnlyOnInitialBurst` set to true, the delay occurs only before the initial burst shot. Note that if using Ares, `Burst` index does not reset if firing is interrupted or the firer loses target, meaning it will be able to resume firing without waiting for the delay.
@@ -1670,6 +1671,7 @@ In `rulesmd.ini`:
 DelayedFire.Duration=                  ; integer - single or comma-sep. range (game frames)
 DelayedFire.Animation=                 ; Animation
 DelayedFire.AnimIsAttached=true        ; boolean
+DelayedFire.AnimOffset=                ; integer - Forward,Lateral,Height
 DelayedFire.CenterAnimOnFirer=false    ; boolean
 DelayedFire.RemoveAnimOnNoDelay=false  ; boolean
 DelayedFire.PauseFiringSequence=false  ; boolean
