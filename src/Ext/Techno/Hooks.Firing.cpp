@@ -553,20 +553,19 @@ static void __forceinline CreateDelayedFireAnim(TechnoClass* pThis, AnimTypeClas
 		if (!center)
 			coords = pThis->GetFLH(weaponIndex, coords);
 
-		if (auto const pAnim = GameCreate<AnimClass>(pAnimType, coords))
+		auto const pAnim = GameCreate<AnimClass>(pAnimType, coords);
+
+		if (attach)
+			pAnim->SetOwnerObject(pThis);
+
+		auto const pAnimExt = AnimExt::ExtMap.Find(pAnim);
+		pAnim->Owner = pThis->Owner;
+		pAnimExt->SetInvoker(pThis);
+
+		if (attach)
 		{
-			if (attach)
-				pAnim->SetOwnerObject(pThis);
-
-			auto const pAnimExt = AnimExt::ExtMap.Find(pAnim);
-			pAnim->Owner = pThis->Owner;
-			pAnimExt->SetInvoker(pThis);
-
-			if (attach)
-			{
-				pAnimExt->DelayedFireRemoveOnNoDelay = removeOnNoDelay;
-				TechnoExt::ExtMap.Find(pThis)->CurrentDelayedFireAnim = pAnim;
-			}
+			pAnimExt->DelayedFireRemoveOnNoDelay = removeOnNoDelay;
+			TechnoExt::ExtMap.Find(pThis)->CurrentDelayedFireAnim = pAnim;
 		}
 	}
 }
