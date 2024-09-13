@@ -544,14 +544,21 @@ DEFINE_HOOK(0x6FF905, TechnoClass_FireAt_FireOnce, 0x6)
 	return 0;
 }
 
-static void __forceinline CreateDelayedFireAnim(TechnoClass* pThis, AnimTypeClass* pAnimType, int weaponIndex, bool attach, bool center, bool removeOnNoDelay)
+static void __forceinline CreateDelayedFireAnim(TechnoClass* pThis, AnimTypeClass* pAnimType, int weaponIndex, bool attach, bool center, bool removeOnNoDelay, bool useOffsetOverride, CoordStruct offsetOverride)
 {
 	if (pAnimType)
 	{
+		auto pExt = TechnoExt::ExtMap.Find(pThis);
 		auto coords = pThis->GetCenterCoords();
+		
+		if (useOffsetOverride)
+			pExt->CustomFiringOffset = offsetOverride;
 
 		if (!center)
 			coords = pThis->GetFLH(weaponIndex, coords);
+
+		if (useOffsetOverride)
+			pExt->CustomFiringOffset.reset();
 
 		auto const pAnim = GameCreate<AnimClass>(pAnimType, coords);
 
@@ -565,7 +572,7 @@ static void __forceinline CreateDelayedFireAnim(TechnoClass* pThis, AnimTypeClas
 		if (attach)
 		{
 			pAnimExt->DelayedFireRemoveOnNoDelay = removeOnNoDelay;
-			TechnoExt::ExtMap.Find(pThis)->CurrentDelayedFireAnim = pAnim;
+			pExt->CurrentDelayedFireAnim = pAnim;
 		}
 	}
 }
@@ -599,7 +606,8 @@ DEFINE_HOOK(0x6FDDC0, TechnoClass_FireAt_DelayedFire, 0x6)
 			{
 				pExt->DelayedFireWeaponIndex = weaponIndex;
 				timer.Start(Math::max(GeneralUtils::GetRangedRandomOrSingleValue(pWeaponExt->DelayedFire_Duration), 0));
-				CreateDelayedFireAnim(pThis, pWeaponExt->DelayedFire_Animation, weaponIndex, pWeaponExt->DelayedFire_AnimIsAttached, pWeaponExt->DelayedFire_CenterAnimOnFirer, pWeaponExt->DelayedFire_RemoveAnimOnNoDelay);
+				CreateDelayedFireAnim(pThis, pWeaponExt->DelayedFire_Animation, weaponIndex, pWeaponExt->DelayedFire_AnimIsAttached,
+					pWeaponExt->DelayedFire_CenterAnimOnFirer, pWeaponExt->DelayedFire_RemoveAnimOnNoDelay, pWeaponExt->DelayedFire_AnimOffset.isset(), pWeaponExt->DelayedFire_AnimOffset.Get());
 
 				return SkipFiring;
 			}
@@ -696,19 +704,28 @@ DEFINE_HOOK(0x6F3B37, TechnoClass_GetFLH_BurstFLH_1, 0x7)
 	GET(TechnoClass*, pThis, EBX);
 	GET_STACK(int, weaponIndex, STACK_OFFSET(0xD8, 0x8));
 
-	if (weaponIndex < 0)
-		return 0;
-
-	bool FLHFound = false;
 	CoordStruct FLH = CoordStruct::Empty;
+	bool FLHFound = false;
 
-	FLH = TechnoExt::GetBurstFLH(pThis, weaponIndex, FLHFound);
-	BurstFLHTemp::FLHFound = FLHFound;
+	auto const pExt = TechnoExt::ExtMap.Find(pThis);
 
-	if (!FLHFound)
+	if (!pExt->CustomFiringOffset.has_value())
 	{
-		if (auto pInf = abstract_cast<InfantryClass*>(pThis))
-			FLH = TechnoExt::GetSimpleFLH(pInf, weaponIndex, FLHFound);
+		FLH = pExt->CustomFiringOffset.value();
+		FLHFound = true;
+		BurstFLHTemp::FLHFound = true;
+	}
+
+	if (!FLHFound && weaponIndex >= 0)
+	{
+		FLH = TechnoExt::GetBurstFLH(pThis, weaponIndex, FLHFound);
+		BurstFLHTemp::FLHFound = FLHFound;
+
+		if (!FLHFound)
+		{
+			if (auto pInf = abstract_cast<InfantryClass*>(pThis))
+				FLH = TechnoExt::GetSimpleFLH(pInf, weaponIndex, FLHFound);
+		}
 	}
 
 	if (FLHFound)
@@ -919,7 +936,9 @@ DEFINE_HOOK(0x5209AF, InfantryClass_FiringAI, 0x6)
 			{
 				pExt->DelayedFireWeaponIndex = weaponIndex;
 				timer.Start(Math::max(GeneralUtils::GetRangedRandomOrSingleValue(pWeaponExt->DelayedFire_Duration), 0));
-				CreateDelayedFireAnim(pThis, pWeaponExt->DelayedFire_Animation, weaponIndex, pWeaponExt->DelayedFire_AnimIsAttached, pWeaponExt->DelayedFire_CenterAnimOnFirer, pWeaponExt->DelayedFire_RemoveAnimOnNoDelay);
+				CreateDelayedFireAnim(pThis, pWeaponExt->DelayedFire_Animation, weaponIndex, pWeaponExt->DelayedFire_AnimIsAttached,
+					pWeaponExt->DelayedFire_CenterAnimOnFirer, pWeaponExt->DelayedFire_RemoveAnimOnNoDelay, pWeaponExt->DelayedFire_AnimOffset.isset(), pWeaponExt->DelayedFire_AnimOffset.Get());
+
 				return ReturnFromFunction;
 			}
 			else if (timer.InProgress())

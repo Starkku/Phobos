@@ -516,6 +516,7 @@ void TechnoExt::ExtData::Serialize(T& Stm)
 		.Process(this->DelayedFireTimer)
 		.Process(this->DelayedFireWeaponIndex)
 		.Process(this->CurrentDelayedFireAnim)
+		.Process(this->CustomFiringOffset)
 		;
 }
 

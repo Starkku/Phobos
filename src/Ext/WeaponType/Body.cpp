@@ -121,6 +121,7 @@ void WeaponTypeExt::ExtData::LoadFromINIFile(CCINIClass* const pINI)
 	this->DelayedFire_RemoveAnimOnNoDelay.Read(exINI, pSection, "DelayedFire.RemoveAnimOnNoDelay");
 	this->DelayedFire_PauseFiringSequence.Read(exINI, pSection, "DelayedFire.PauseFiringSequence");
 	this->DelayedFire_OnlyOnInitialBurst.Read(exINI, pSection, "DelayedFire.OnlyOnInitialBurst");
+	this->DelayedFire_AnimOffset.Read(exINI, pSection, "DelayedFire.AnimOffset");
 }
 
 template <typename T>
@@ -172,6 +173,7 @@ void WeaponTypeExt::ExtData::Serialize(T& Stm)
 		.Process(this->DelayedFire_RemoveAnimOnNoDelay)
 		.Process(this->DelayedFire_PauseFiringSequence)
 		.Process(this->DelayedFire_OnlyOnInitialBurst)
+		.Process(this->DelayedFire_AnimOffset)
 		;
 };
 
