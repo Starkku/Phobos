@@ -65,6 +65,7 @@ public:
 		Valueable<bool> DelayedFire_CenterAnimOnFirer;
 		Valueable<bool> DelayedFire_RemoveAnimOnNoDelay;
 		Valueable<bool> DelayedFire_PauseFiringSequence;
+		Valueable<bool> DelayedFire_OnlyOnInitialBurst;
 
 		ExtData(WeaponTypeClass* OwnerObject) : Extension<WeaponTypeClass>(OwnerObject)
 			, DiskLaser_Radius { DiskLaserClass::Radius }
@@ -111,6 +112,7 @@ public:
 			, DelayedFire_CenterAnimOnFirer { false }
 			, DelayedFire_RemoveAnimOnNoDelay { false }
 			, DelayedFire_PauseFiringSequence { false }
+			, DelayedFire_OnlyOnInitialBurst { false }
 		{ }
 
 		int GetBurstDelay(int burstIndex) const;
