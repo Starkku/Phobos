@@ -413,6 +413,7 @@ DEFINE_HOOK(0x423061, AnimClass_DrawIt_Visibility, 0x6)
 	return 0;
 }
 
+// Reverse-engineered from YR with exception of new additions.
 DEFINE_HOOK(0x42308D, AnimClass_DrawIt_Transparency, 0x6)
 {
 	enum { SkipGameCode = 0x4230FE, ReturnFromFunction = 0x4238A3 };
@@ -421,13 +422,14 @@ DEFINE_HOOK(0x42308D, AnimClass_DrawIt_Transparency, 0x6)
 	GET(BlitterFlags, flags, EBX);
 
 	auto const pType = pThis->Type;
-	int translucencyLevel = pThis->TranslucencyLevel; // Used by building animations when building needs to be drawn partially transparent.
+	int translucencyLevel = pThis->TranslucencyLevel; // Used by building animations when building needs to be drawn partially transparent. >= 15 means animation skips drawing.
 
 	if (!pType->Translucent)
 	{
 		auto translucency = pThis->Type->Translucency;
 		auto const pTypeExt = AnimTypeExt::ExtMap.Find(pType);
 
+		// New addition: Different Translucency animation for attached animations on cloaked objects
 		if (pTypeExt->Translucency_Cloaked.isset())
 		{
 			if (auto const pTechno = abstract_cast<TechnoClass*>(pThis->OwnerObject))
@@ -439,6 +441,7 @@ DEFINE_HOOK(0x42308D, AnimClass_DrawIt_Transparency, 0x6)
 
 		if (translucency <= 0)
 		{
+			// Translucency <= 0, map translucencyLevel to transparency blitter flags
 			if (translucencyLevel)
 			{
 				if (translucencyLevel > 15)
@@ -453,6 +456,7 @@ DEFINE_HOOK(0x42308D, AnimClass_DrawIt_Transparency, 0x6)
 		}
 		else
 		{
+			// Translucency > 0, map Translucency to transparency blitter flags
 			if (translucencyLevel >= 15)
 				return ReturnFromFunction;
 			else if (translucency == 75)
@@ -472,12 +476,14 @@ DEFINE_HOOK(0x42308D, AnimClass_DrawIt_Transparency, 0x6)
 		int currentFrame = pThis->Animation.Value;
 		int frames = pType->End;
 
+		// New addition: Keyframeable Translucent stages.
 		if (pTypeExt->Translucent_Keyframes.KeyframeData.size() > 0)
 		{
 			flags |= pTypeExt->Translucent_Keyframes.Get(static_cast<double>(currentFrame) / frames);
 		}
 		else
 		{
+			// No keyframes -> default behaviour.
 			if (currentFrame > frames * 0.6)
 				flags |= BlitterFlags::TransLucent75;
 			else if (currentFrame > frames * 0.4)
