@@ -629,3 +629,16 @@ DEFINE_HOOK(0x6FABC4, TechnoClass_AI_AnimationPaused, 0x6)
 	return 0;
 }
 
+DEFINE_HOOK(0x6FCDD2, TechnoClass_AssignTarget_Changed, 0x6)
+{
+	GET(TechnoClass*, pThis, ESI);
+	GET(AbstractClass*, pNewTarget, EDI);
+
+	if (!pNewTarget)
+	{
+		auto const pExt = TechnoExt::ExtMap.Find(pThis);
+		pExt->ResetDelayedFireTimer();
+	}
+
+	return 0;
+}
