@@ -34,10 +34,6 @@ void TechnoExt::ExtData::OnEarlyUpdate()
 			pShieldData->SetAnimationVisibility(true);
 	}
 
-	// Reset delayed fire timers if have no target and not attacking.
-	if (!pThis->Target && pThis->CurrentMission != Mission::Attack)
-		this->ResetDelayedFireTimer();
-
 	if (this->CheckDeathConditions())
 		return;
 

@@ -592,7 +592,7 @@ DEFINE_HOOK(0x6FDDC0, TechnoClass_FireAt_DelayedFire, 0x6)
 	if (pExt->DelayedFireWeaponIndex >= 0 && pExt->DelayedFireWeaponIndex != weaponIndex)
 		pExt->ResetDelayedFireTimer();
 
-	if (pWeaponExt->DelayedFire_Duration.isset())
+	if (pWeaponExt->DelayedFire_Duration.isset() && (!pThis->Transporter || !pWeaponExt->DelayedFire_SkipInTransport))
 	{
 		if (pThis->WhatAmI() == AbstractType::Infantry && pWeaponExt->DelayedFire_PauseFiringSequence)
 			return 0;
@@ -606,8 +606,13 @@ DEFINE_HOOK(0x6FDDC0, TechnoClass_FireAt_DelayedFire, 0x6)
 			{
 				pExt->DelayedFireWeaponIndex = weaponIndex;
 				timer.Start(Math::max(GeneralUtils::GetRangedRandomOrSingleValue(pWeaponExt->DelayedFire_Duration), 0));
-				CreateDelayedFireAnim(pThis, pWeaponExt->DelayedFire_Animation, weaponIndex, pWeaponExt->DelayedFire_AnimIsAttached,
-					pWeaponExt->DelayedFire_CenterAnimOnFirer, pWeaponExt->DelayedFire_RemoveAnimOnNoDelay, pWeaponExt->DelayedFire_AnimOffset.isset(), pWeaponExt->DelayedFire_AnimOffset.Get());
+				auto pAnimType = pWeaponExt->DelayedFire_Animation;
+
+				if (pThis->Transporter && pWeaponExt->DelayedFire_OpenToppedAnimation.isset())
+					pAnimType = pWeaponExt->DelayedFire_OpenToppedAnimation;
+
+				CreateDelayedFireAnim(pThis, pAnimType, weaponIndex, pWeaponExt->DelayedFire_AnimIsAttached, pWeaponExt->DelayedFire_CenterAnimOnFirer,
+					pWeaponExt->DelayedFire_RemoveAnimOnNoDelay, pWeaponExt->DelayedFire_AnimOffset.isset(), pWeaponExt->DelayedFire_AnimOffset.Get());
 
 				return SkipFiring;
 			}
@@ -925,7 +930,7 @@ DEFINE_HOOK(0x5209AF, InfantryClass_FiringAI, 0x6)
 		pExt->FiringSequencePaused = false;
 	}
 
-	if (pWeaponExt && pWeaponExt->DelayedFire_PauseFiringSequence && pWeaponExt->DelayedFire_Duration.isset())
+	if (pWeaponExt && pWeaponExt->DelayedFire_PauseFiringSequence && pWeaponExt->DelayedFire_Duration.isset() && (!pThis->Transporter || !pWeaponExt->DelayedFire_SkipInTransport))
 	{
 		if (pWeapon->Burst <= 1 || !pWeaponExt->DelayedFire_OnlyOnInitialBurst || pThis->CurrentBurstIndex == 0)
 		{
@@ -936,8 +941,13 @@ DEFINE_HOOK(0x5209AF, InfantryClass_FiringAI, 0x6)
 			{
 				pExt->DelayedFireWeaponIndex = weaponIndex;
 				timer.Start(Math::max(GeneralUtils::GetRangedRandomOrSingleValue(pWeaponExt->DelayedFire_Duration), 0));
-				CreateDelayedFireAnim(pThis, pWeaponExt->DelayedFire_Animation, weaponIndex, pWeaponExt->DelayedFire_AnimIsAttached,
-					pWeaponExt->DelayedFire_CenterAnimOnFirer, pWeaponExt->DelayedFire_RemoveAnimOnNoDelay, pWeaponExt->DelayedFire_AnimOffset.isset(), pWeaponExt->DelayedFire_AnimOffset.Get());
+				auto pAnimType = pWeaponExt->DelayedFire_Animation;
+
+				if (pThis->Transporter && pWeaponExt->DelayedFire_OpenToppedAnimation.isset())
+					pAnimType = pWeaponExt->DelayedFire_OpenToppedAnimation;
+
+				CreateDelayedFireAnim(pThis, pAnimType, weaponIndex, pWeaponExt->DelayedFire_AnimIsAttached, pWeaponExt->DelayedFire_CenterAnimOnFirer,
+					pWeaponExt->DelayedFire_RemoveAnimOnNoDelay, pWeaponExt->DelayedFire_AnimOffset.isset(), pWeaponExt->DelayedFire_AnimOffset.Get());
 
 				return ReturnFromFunction;
 			}

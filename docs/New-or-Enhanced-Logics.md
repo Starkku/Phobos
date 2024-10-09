@@ -1668,7 +1668,8 @@ Burst.FireWithinSequence=false  ; boolean
 ### Delayed firing
 
 - It is possible to have any weapon fire with a delay by setting `DelayedFire.Duration` on a WeaponType - it supports a single integer or two comma-separated ones for a random range to pick value from.
-  - `DelayedFire.Animation` can be used to define animation to create when the delay timer starts.
+  - If `DelayedFire.SkipInTransport` is set to true and firer is in a transport, no delay is applied to firing.
+  - `DelayedFire.Animation` can be used to define animation to create when the delay timer starts. `DelayedFire.OpenToppedAnimation` is used instead if set if the firer is in a transport.
     - If `DelayedFire.AnimIsAttached` is set to true, the animation is attached to the firing TechnoType. If `DelayedFire.RemoveAnimOnNoDelay` is also set to true the animation is removed when the duration expires or firing is interrupted regardless of its remaining lifetime.
     - `DelayedFire.AnimOffset` can be used to override the weapon's firing coordinates / FLH for the animation's position.
     - If `DelayedFire.CenterAnimOnFirer` is set the animation is created at the firer's center rather than at the firing coordinates.
@@ -1679,7 +1680,9 @@ In `rulesmd.ini`:
 ```ini
 [SOMEWEAPON]                           ; WeaponType
 DelayedFire.Duration=                  ; integer - single or comma-sep. range (game frames)
+DelayedFire.SkipInTransport=false      ; boolean
 DelayedFire.Animation=                 ; Animation
+DelayedFire.OpenToppedAnimation=       ; Animation
 DelayedFire.AnimIsAttached=true        ; boolean
 DelayedFire.AnimOffset=                ; integer - Forward,Lateral,Height
 DelayedFire.CenterAnimOnFirer=false    ; boolean
