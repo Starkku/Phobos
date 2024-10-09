@@ -1691,6 +1691,10 @@ DelayedFire.PauseFiringSequence=false  ; boolean
 DelayedFire.OnlyOnInitialBurst=false   ; boolean
 ```
 
+```{note}
+AircraftTypes, due to their different attack patterns, will not wait for the delay to expire before attempting to fire and will instead continue without firing if the delay is too long.
+```
+
 ### Extra warhead detonations
 
 - It is now possible to have same weapon detonate multiple Warheads on impact by listing `ExtraWarheads`. The warheads are detonated at same location as the main one, after it in listed order. This only works in cases where a projectile has been fired by a weapon and still remembers it when it is detonated (due to currently existing technical limitations, this excludes `AirburstWeapon`).
