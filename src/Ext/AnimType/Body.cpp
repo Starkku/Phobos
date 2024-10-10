@@ -134,10 +134,7 @@ void AnimTypeExt::ExtData::LoadFromINIFile(CCINIClass* pINI)
 	this->LargeFireDistances.Read(exINI, pID, "LargeFireDistances");
 
 	if (this->OwnerObject()->Translucent)
-	{
 		this->Translucent_Keyframes.Read(exINI, pID, "Translucent.%s", this->OwnerObject()->End);
-		this->Translucent_Keyframes.InterpolationMode = InterpolationMode::None;
-	}
 }
 
 template <typename T>
