@@ -1773,9 +1773,17 @@ void __declspec(noinline) MultiflagValueableVector<T, TExtraArgs...>::Read(INI_E
 		_snprintf_s(flagName, sizeof(flagName), pBaseFlag, i, "%s");
 
 		if (!dataEntry.Read(parser, pSection, flagName, extraArgs...))
-			break;
+		{
+			if (i < this->size())
+				continue;
+			else
+				break;
+		}
 
-		this->push_back(dataEntry);
+		if (this->size() > i)
+			this->at(i) = dataEntry;
+		else
+			this->push_back(dataEntry);
 	}
 }
 
@@ -1794,9 +1802,18 @@ void __declspec(noinline) MultiflagNullableVector<T, TExtraArgs...>::Read(INI_EX
 		_snprintf_s(flagName, sizeof(flagName), pBaseFlag, i, "%s");
 
 		if (!dataEntry.Read(parser, pSection, flagName, extraArgs...))
-			break;
+		{
+			if (i < this->size())
+				continue;
+			else
+				break;
+		}
 
-		this->push_back(dataEntry);
+		if (this->size() > i)
+			this->at(i) = dataEntry;
+		else
+			this->push_back(dataEntry);
+
 		this->hasValue = true;
 	}
 }
@@ -1916,7 +1933,7 @@ void __declspec(noinline) Animatable<TValue>::Read(INI_EX& parser, const char* c
 
 		if (lastPercentage > value.Percentage)
 		{
-			Debug::Log("[Developer warning] [%s] %s has keyframe out of order (%.3f after previous value keyframe of %.3f).\n", pSection, flagName, value.Percentage, lastPercentage);
+			Debug::Log("[Developer warning] [%s] %s has keyframe out of order (%.3f after previous keyframe of %.3f).\n", pSection, flagName, value.Percentage, lastPercentage);
 			foundError = true;
 		}
 
