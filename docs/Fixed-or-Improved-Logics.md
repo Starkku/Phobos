@@ -172,6 +172,7 @@ This page describes all ingame logics that are fixed or improved in Phobos witho
 - Projectiles created from `AirburstWeapon` now remember the WeaponType and can apply radiation etc.
 - Fixed damaged aircraft not repairing on `UnitReload=true` docks unless they land on the dock first.
 - Certain global tileset indices (`ShorePieces`, `WaterSet`, `CliffSet`, `WaterCliffs`, `WaterBridge`, `BridgeSet` and `WoodBridgeSet`) are now correctly parsed for Lunar theater.
+- Unit `Speed` setting now accepts floating-point values. Internally parsed values are clamped down to maximum of 100, multiplied by 256 and divided by 100, the result (which at this point is converted to an integer) then clamped down to maximum of 255 giving effective internal speed value range of 0 to 255, e.g leptons traveled per game frame.
 
 ## Fixes / interactions with other extensions
 
