@@ -253,6 +253,7 @@ This page lists all the individual contributions to the project by their author.
   - EM Pulse cannon logic improvements
   - Vehicles keeping target on move command
   - Frame CRC generation rewrite
+  - Delayed fire weapons
 - **Morton (MortonPL)**:
   - `XDrawOffset` for animations
   - Shield passthrough & absorption

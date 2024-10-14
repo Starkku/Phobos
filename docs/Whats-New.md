@@ -465,6 +465,7 @@ New:
 - `Scorch` / `Flamer` fire animation customization (by Starkku)
 - Unit `Speed` setting now accepts floating point values (by Starkku)
 - Option for vehicles to keep target when issued move command (by Starkku)
+- Delayed fire weapons (by Starkku)
 
 Vanilla fixes:
 - Allow AI to repair structures built from base nodes/trigger action 125/SW delivery in single player missions (by Trsdy)

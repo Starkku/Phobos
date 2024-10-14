@@ -59,6 +59,11 @@ public:
 		int LastWarpInDelay;                   // Last-warp in delay for this unit, used by HasCarryoverWarpInDelay.
 		bool IsBeingChronoSphered;             // Set to true on units currently being ChronoSphered, does not apply to Ares-ChronoSphere'd buildings or Chrono reinforcements.
 		bool KeepTargetOnMove;
+		bool FiringSequencePaused;
+		int DelayedFireWeaponIndex;
+		CDTimerClass DelayedFireTimer;
+		AnimClass* CurrentDelayedFireAnim;
+		OptionalStruct<CoordStruct, true> CustomFiringOffset; // If set any calls to GetFLH() will use this coordinate as FLH.
 
 		ExtData(TechnoClass* OwnerObject) : Extension<TechnoClass>(OwnerObject)
 			, TypeExtData { nullptr }
@@ -94,6 +99,11 @@ public:
 			, LastWarpInDelay { 0 }
 			, IsBeingChronoSphered { false }
 			, KeepTargetOnMove { false }
+			, FiringSequencePaused { false }
+			, DelayedFireWeaponIndex { -1 }
+			, DelayedFireTimer {}
+			, CurrentDelayedFireAnim { nullptr }
+			, CustomFiringOffset {}
 		{ }
 
 		void OnEarlyUpdate();
@@ -117,6 +127,7 @@ public:
 		void UpdateSelfOwnedAttachEffects();
 		bool HasAttachedEffects(std::vector<AttachEffectTypeClass*> attachEffectTypes, bool requireAll, bool ignoreSameSource, TechnoClass* pInvoker, AbstractClass* pSource, std::vector<int> const* minCounts, std::vector<int> const* maxCounts) const;
 		int GetAttachedEffectCumulativeCount(AttachEffectTypeClass* pAttachEffectType, bool ignoreSameSource = false, TechnoClass* pInvoker = nullptr, AbstractClass* pSource = nullptr) const;
+		void ResetDelayedFireTimer();
 
 		virtual ~ExtData() override;
 		virtual void InvalidatePointer(void* ptr, bool bRemoved) override { }
