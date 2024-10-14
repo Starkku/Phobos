@@ -545,6 +545,7 @@ Vanilla fixes:
 - Certain global tileset indices (`ShorePieces`, `WaterSet`, `CliffSet`, `WaterCliffs`, `WaterBridge`, `BridgeSet` and `WoodBridgeSet`) are now correctly parsed for Lunar theater (by Starkku)
 - Subterranean movement now benefits from speed multipliers from all sources such as veterancy, AttachEffect etc. (by Starkku)
 - Fixed `MovementZone=Subterannean` harvesters being unable to find docks if in area enclosed by water, cliffs etc. (by Starkku)
+- Purely visual animations and particles excluded from sync checks (by Starkku)
 
 Phobos fixes:
 - Fixed a few errors of calling for superweapon launch by `LaunchSW` or building infiltration (by Trsdy)
