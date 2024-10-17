@@ -464,6 +464,7 @@ New:
 - Toggle to disallow buildings from providing build area during buildup (by Starkku)
 - Allow customizing which building types provide build area for a building (by Starkku)
 - `Scorch` / `Flamer` fire animation customization (by Starkku)
+- Warheads parasite removal customization (by Starkku)
 - Unit `Speed` setting now accepts floating point values (by Starkku)
 - Option for vehicles to keep target when issued move command (by Starkku)
 - Delayed fire weapons (by Starkku)
