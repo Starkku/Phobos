@@ -476,12 +476,6 @@ DEFINE_HOOK(0x70EFE0, TechnoClass_GetMaxSpeed, 0x6)
 	return SkipGameCode;
 }
 
-
-	}
-
-	return 0;
-}
-
 #pragma region KeepTargetOnMove
 
 // Do not explicitly reset target for KeepTargetOnMove vehicles when issued move command.
@@ -570,3 +564,7 @@ DEFINE_HOOK(0x6FCDD2, TechnoClass_AssignTarget_Changed, 0x6)
 	{
 		auto const pExt = TechnoExt::ExtMap.Find(pThis);
 		pExt->ResetDelayedFireTimer();
+	}
+
+	return 0;
+}

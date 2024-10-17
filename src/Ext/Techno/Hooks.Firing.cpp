@@ -558,7 +558,7 @@ static void __forceinline CreateDelayedFireAnim(TechnoClass* pThis, AnimTypeClas
 			coords = pThis->GetFLH(weaponIndex, coords);
 
 		if (useOffsetOverride)
-			pExt->CustomFiringOffset.clear();
+			pExt->CustomFiringOffset.reset();
 
 		auto const pAnim = GameCreate<AnimClass>(pAnimType, coords);
 
@@ -714,9 +714,9 @@ DEFINE_HOOK(0x6F3B37, TechnoClass_GetFLH_BurstFLH_1, 0x7)
 
 	auto const pExt = TechnoExt::ExtMap.Find(pThis);
 
-	if (!pExt->CustomFiringOffset.empty())
+	if (!pExt->CustomFiringOffset.has_value())
 	{
-		FLH = pExt->CustomFiringOffset.get();
+		FLH = pExt->CustomFiringOffset.value();
 		FLHFound = true;
 		BurstFLHTemp::FLHFound = true;
 	}
