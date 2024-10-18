@@ -714,7 +714,7 @@ DEFINE_HOOK(0x6F3B37, TechnoClass_GetFLH_BurstFLH_1, 0x7)
 
 	auto const pExt = TechnoExt::ExtMap.Find(pThis);
 
-	if (!pExt->CustomFiringOffset.has_value())
+	if (pExt->CustomFiringOffset.has_value())
 	{
 		FLH = pExt->CustomFiringOffset.value();
 		FLHFound = true;
