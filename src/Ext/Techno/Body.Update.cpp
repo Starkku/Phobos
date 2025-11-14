@@ -1250,6 +1250,9 @@ void TechnoExt::UpdateTintValues()
 
 	if (this->AE.HasTint)
 	{
+		std::unordered_map<AttachEffectTypeClass*, int> cumulativeTintTypes;
+		auto const black = ColorStruct { 0,0,0 };
+
 		for (auto const& attachEffect : this->AttachedEffects)
 		{
 			auto const type = attachEffect->GetType();
@@ -1257,7 +1260,34 @@ void TechnoExt::UpdateTintValues()
 			if (!attachEffect->IsActive() || !type->HasTint())
 				continue;
 
-			calculateTint(Drawing::RGB_To_Int(type->Tint_Color), static_cast<int>(type->Tint_Intensity * 1000), type->Tint_VisibleToHouses);
+			if (type->Cumulative && type->Tint_Color.isset() && type->Tint_Color.Get() != black)
+			{
+				auto it = cumulativeTintTypes.find(type);
+				int increment = 1;
+
+				if (it != cumulativeTintTypes.end())
+					it->second = it->second + increment;
+				else
+					cumulativeTintTypes.emplace(type, increment);
+			}
+			else
+			{
+				calculateTint(Drawing::RGB_To_Int(type->Tint_Color), static_cast<int>(type->Tint_Intensity * 1000), type->Tint_VisibleToHouses);
+			}
+		}
+
+		for (auto& kvp : cumulativeTintTypes)
+		{
+			ColorStruct color { 0, 0, 0 };
+			double intensity = 0;
+
+			for (int i = 0; i < kvp.second; i++)
+			{
+				color += kvp.first->Tint_Color.Get();
+				intensity += kvp.first->Tint_Intensity;
+			}
+
+			calculateTint(Drawing::RGB_To_Int(color), static_cast<int>(intensity * 1000), kvp.first->Tint_VisibleToHouses);
 		}
 	}
 

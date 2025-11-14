@@ -137,6 +137,7 @@ void AttachEffectTypeClass::LoadFromINI(CCINIClass* pINI)
 	this->Animation.Read(exINI, pSection, "Animation");
 	this->CumulativeAnimations.Read(exINI, pSection, "CumulativeAnimations");
 	this->CumulativeAnimations_RestartOnChange.Read(exINI, pSection, "CumulativeAnimations.RestartOnChange");
+	this->CumulativeAnimations_CountIncrement.Read(exINI, pSection, "CumulativeAnimations.CountIncrement");
 	this->Animation_ResetOnReapply.Read(exINI, pSection, "Animation.ResetOnReapply");
 	this->Animation_OfflineAction.Read(exINI, pSection, "Animation.OfflineAction");
 	this->Animation_TemporalAction.Read(exINI, pSection, "Animation.TemporalAction");
@@ -226,6 +227,12 @@ void AttachEffectTypeClass::LoadFromINI(CCINIClass* pINI)
 		this->RestrictedArmorMultiplier = true;
 	else
 		this->RestrictedArmorMultiplier = false;
+
+	if (this->CumulativeAnimations_CountIncrement == 0)
+	{
+		Debug::Log("[Developer warning] [%s] CumulativeAnimations.CountIncrement is set 0 which would cause a crash, set to 1 instead.\n", pSection);
+		this->CumulativeAnimations_CountIncrement = 1;
+	}
 }
 
 template <typename T>
@@ -262,6 +269,7 @@ void AttachEffectTypeClass::Serialize(T& Stm)
 		.Process(this->Animation)
 		.Process(this->CumulativeAnimations)
 		.Process(this->CumulativeAnimations_RestartOnChange)
+		.Process(this->CumulativeAnimations_CountIncrement)
 		.Process(this->Animation_ResetOnReapply)
 		.Process(this->Animation_OfflineAction)
 		.Process(this->Animation_TemporalAction)
