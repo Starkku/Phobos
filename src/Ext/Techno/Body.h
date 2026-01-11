@@ -61,6 +61,7 @@ public:
 	int DelayedFireWeaponIndex;
 	CDTimerClass DelayedFireTimer;
 	AnimClass* CurrentDelayedFireAnim;
+	AnimClass* SubterraneanDetectAnim;
 
 	AirstrikeClass* AirstrikeTargetingMe;
 
@@ -123,6 +124,7 @@ public:
 		, DelayedFireWeaponIndex { -1 }
 		, DelayedFireTimer {}
 		, CurrentDelayedFireAnim { nullptr }
+		, SubterraneanDetectAnim { nullptr }
 		, AttachedEffectInvokerCount { 0 }
 		, IsSelected { false }
 		, TintColorOwner { 0 }
@@ -187,6 +189,7 @@ public:
 	int ApplyForceWeaponInRange(AbstractClass* pTarget);
 	void ResetDelayedFireTimer();
 	void UpdateTintValues();
+	void UpdateSubterraneanDetectAnim(bool shouldRemoveAnim);
 	void UpdateLastTargetCrd();
 	int GetSight();
 

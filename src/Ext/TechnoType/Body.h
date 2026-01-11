@@ -180,6 +180,8 @@ public:
 	Valueable<int> CrashROT;
 	Nullable<int> ShadowSizeCharacteristicHeight;
 
+		Nullable<AnimTypeClass*> SubterraneanDetectAnim;
+
 	Valueable<CSFText> EnemyUIName;
 
 	bool ForceWeapon_Check;
@@ -646,6 +648,8 @@ public:
 		, CrashROT { -1 }
 		, ShadowSizeCharacteristicHeight { }
 
+
+			, SubterraneanDetectAnim {}
 		, AutoDeath_Behavior { }
 		, AutoDeath_AllowLimboed {}
 		, AutoDeath_VanishAnimation {}
