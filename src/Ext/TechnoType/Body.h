@@ -171,6 +171,8 @@ public:
 	Nullable<bool> JumpjetRotateOnCrash;
 	Nullable<int> ShadowSizeCharacteristicHeight;
 
+		Nullable<AnimTypeClass*> SubterraneanDetectAnim;
+
 	Valueable<CSFText> EnemyUIName;
 
 	bool ForceWeapon_Check;
@@ -557,6 +559,8 @@ public:
 		, JumpjetRotateOnCrash {}
 		, ShadowSizeCharacteristicHeight { }
 
+
+			, SubterraneanDetectAnim {}
 		, AutoDeath_Behavior { }
 		, AutoDeath_AllowLimboed {}
 		, AutoDeath_VanishAnimation {}

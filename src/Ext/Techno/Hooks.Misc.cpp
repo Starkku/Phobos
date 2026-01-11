@@ -473,6 +473,7 @@ DEFINE_HOOK(0x728E5F, TunnelLocomotionClass_Process_RestoreAnims, 0x7)
 	{
 		const auto pExt = UnitExt::Fetch(static_cast<UnitClass*>(pLoco->LinkedTo));
 		pExt->IsBurrowed = false;
+		pExt->UpdateSubterraneanDetectAnim(true);
 
 		if (const auto pShieldData = pExt->Shield.get())
 			pShieldData->SetAnimationVisibility(true);

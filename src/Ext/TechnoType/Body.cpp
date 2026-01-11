@@ -908,6 +908,8 @@ void TechnoTypeExt::LoadFromINIFile(CCINIClass* const pINI)
 	this->JumpjetRotateOnCrash.Read(exINI, pSection, "JumpjetRotateOnCrash");
 	this->ShadowSizeCharacteristicHeight.Read(exINI, pSection, "ShadowSizeCharacteristicHeight");
 
+	this->SubterraneanDetectAnim.Read(exINI, pSection, "SubterraneanDetectAnim");
+
 	this->EnemyUIName.Read(exINI, pSection, "EnemyUIName");
 
 	this->ForceWeapon_Naval_Decloaked.Read(exINI, pSection, "ForceWeapon.Naval.Decloaked");
@@ -1572,6 +1574,8 @@ void TechnoTypeExt::Serialize(T& Stm)
 		.Process(this->JumpjetRotateOnCrash)
 		.Process(this->ShadowSizeCharacteristicHeight)
 
+
+		.Process(this->SubterraneanDetectAnim)
 		.Process(this->EnemyUIName)
 
 		.Process(this->ForceWeapon_Check)

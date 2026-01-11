@@ -238,6 +238,7 @@ public:
 		Valueable<bool> DrawInsignia_UsePixelSelectionBracketDelta;
 		ValueableVector<AnimTypeClass*> Promote_VeteranAnimation;
 		ValueableVector<AnimTypeClass*> Promote_EliteAnimation;
+		Valueable<AnimTypeClass*> SubterraneanDetectAnim;
 
 		Valueable<bool> JumpjetClimbPredictHeight;
 		Valueable<bool> JumpjetClimbWithoutCutOut;
@@ -739,6 +740,7 @@ public:
 			, DrawInsignia_UsePixelSelectionBracketDelta { { false } }
 			, Promote_VeteranAnimation {}
 			, Promote_EliteAnimation {}
+			, SubterraneanDetectAnim { nullptr }
 			, AnimRemapDefaultColorScheme { 0 }
 			, TimerBlinkColorScheme { 5 }
 			, Buildings_DefaultDigitalDisplayTypes {}
