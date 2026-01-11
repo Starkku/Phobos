@@ -994,9 +994,12 @@ DEFINE_HOOK(0x72958E, TunnelLocomotionClass_ProcessDigging_SlowdownDistance, 0x8
 	const auto coords = pLoco->Coords;
 	const int distance = (int) CoordStruct{currLoc.X - coords.X, currLoc.Y - coords.Y,0}.Magnitude() ;
 
+	auto const pExt = TechnoExt::Fetch(pLinkedTo);
+	pExt->UpdateSubterraneanDetectAnim(false);
+
 	// Nov 27, 2024 - Starkku: The movement speed was actually also hardcoded here to 19, so the distance check made sense
 	// It can now be customized globally or per TechnoType however
-	auto const pTypeExt = TechnoExt::Fetch(pLinkedTo)->TypeExtData;
+	auto const pTypeExt = pExt->TypeExtData;
 	auto const pType = pTypeExt->OwnerObject();
 	int speed = pTypeExt->SubterraneanSpeed >= 0 ? pTypeExt->SubterraneanSpeed : RulesExt::Global()->SubterraneanSpeed;
 
