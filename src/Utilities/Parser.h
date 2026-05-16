@@ -35,6 +35,7 @@
 #include <type_traits>
 #include <Windows.h>
 #include <stdio.h>
+#include <FileSystem.h>
 
 //! Parses strings into one or more elements of another type.
 /*!
@@ -201,6 +202,23 @@ public:
 // Specializations
 // Usually, it's enough to specialize Parser<T,1>::TryParse, because all other
 // functions will eventually call them.
+
+template<>
+inline bool Parser<SHPStruct*>::TryParse(const char* pValue, OutType* outValue)
+{
+	std::string result = pValue;
+
+	if (result.size() < 4 || !std::equal(result.end() - 4, result.end(), ".shp", [](char input, char expected) { return std::tolower(input) == expected; }))
+		result += ".shp";
+
+	if (auto const pImage = FileSystem::LoadSHPFile(result.c_str()))
+	{
+		*outValue = pImage;
+		return true;
+	}
+
+	return false;
+}
 
 template<>
 inline bool Parser<bool>::TryParse(const char* pValue, OutType* outValue)
