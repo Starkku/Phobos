@@ -24,9 +24,11 @@ public:
 	}
 
 	Valueable<int> Gas_MaxDriftSpeed;
+		ValueableVector<SHPStruct*> RandomImages;
 
 	ParticleTypeExt(ParticleTypeClass* OwnerObject) : ObjectTypeExt(OwnerObject)
 		, Gas_MaxDriftSpeed { 2 }
+			, RandomImages {}
 	{ }
 
 	virtual ~ParticleTypeExt() = default;
