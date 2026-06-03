@@ -26,7 +26,7 @@ DEFINE_HOOK(0x62BE30, ParticleClass_Gas_AI_DriftSpeed, 0x0)
 static SHPStruct* __fastcall ParticleClass_GetImage_Wrapper(ParticleClass* pThis)
 {
 	auto const pType = pThis->Type;
-	auto const pTypeExt = ParticleTypeExt::ExtMap.Find(pType);
+	auto const pTypeExt = ParticleTypeExt::Fetch(pType);
 	size_t count = pTypeExt->RandomImages.size();
 
 	if (count > 0)
