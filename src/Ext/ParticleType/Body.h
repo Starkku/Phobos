@@ -24,10 +24,12 @@ public:
 	}
 
 	Valueable<int> Gas_MaxDriftSpeed;
+		Valueable<bool> AlphaImage_IsLightFlash;
 		ValueableVector<SHPStruct*> RandomImages;
 
 	ParticleTypeExt(ParticleTypeClass* OwnerObject) : ObjectTypeExt(OwnerObject)
 		, Gas_MaxDriftSpeed { 2 }
+			, AlphaImage_IsLightFlash { false }
 			, RandomImages {}
 	{ }
 
