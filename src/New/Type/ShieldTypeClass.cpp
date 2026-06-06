@@ -61,12 +61,6 @@ void ShieldTypeClass::LoadFromINI(CCINIClass* pINI)
 
 	this->BreakAnim.Read(exINI, pSection, "BreakAnim");
 	this->HitAnim.Read(exINI, pSection, "HitAnim");
-	this->HitFlash.Read(exINI, pSection, "HitFlash");
-	this->HitFlash_FixedSize.Read(exINI, pSection, "HitFlash.FixedSize");
-	this->HitFlash_Red.Read(exINI, pSection, "HitFlash.Red");
-	this->HitFlash_Green.Read(exINI, pSection, "HitFlash.Green");
-	this->HitFlash_Blue.Read(exINI, pSection, "HitFlash.Blue");
-	this->HitFlash_Black.Read(exINI, pSection, "HitFlash.Black");
 	this->BreakWeapon.Read<true>(exINI, pSection, "BreakWeapon");
 
 	this->AbsorbPercent.Read(exINI, pSection, "AbsorbPercent");
@@ -89,6 +83,22 @@ void ShieldTypeClass::LoadFromINI(CCINIClass* pINI)
 		this->Tint = std::make_unique<TintTypeClass>();
 
 	this->Tint->LoadFromINI(pINI, pSection);
+
+	// HitFlash
+	Nullable<bool> hasHitFlash;
+	hasHitFlash.Read(exINI, pSection, "HitFlash");
+
+	if (hasHitFlash)
+	{
+		if (this->HitFlash == nullptr)
+			this->HitFlash = std::make_unique<LightFlashTypeClass>();
+
+		this->HitFlash->LoadFromINI(pINI, pSection, "HitFlash", "FixedSize");
+	}
+	else if (hasHitFlash.isset())
+	{
+		this->HitFlash.reset();
+	}
 }
 
 template <typename T>
@@ -127,11 +137,6 @@ void ShieldTypeClass::Serialize(T& Stm)
 		.Process(this->BreakAnim)
 		.Process(this->HitAnim)
 		.Process(this->HitFlash)
-		.Process(this->HitFlash_FixedSize)
-		.Process(this->HitFlash_Red)
-		.Process(this->HitFlash_Green)
-		.Process(this->HitFlash_Blue)
-		.Process(this->HitFlash_Black)
 		.Process(this->BreakWeapon)
 		.Process(this->AbsorbPercent)
 		.Process(this->PassPercent)
