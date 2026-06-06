@@ -651,6 +651,26 @@ RestrictVisibilityIfCloaked=false       ; boolean
 DetachOnCloak=true                      ; boolean
 ```
 
+### Light flash on animation
+
+- It is now possible to have animation generate light flash(es) without firing a weapon.
+  - `LightFlash.Delay` determines delay between creation of light flash(es). Has to be atleast 0 to take effect, although 0 and 1 produce identical results. Keep in mind that this is measured in animation frames, not game frames. Depending on `Rate`, animation may or may not advance animation frames on every game frame.
+    - `LightFlash.OncePerLoop` if set to true, makes light flash occur only once per animation loop (on single loop animations, only once, period) instead of on every frame or intervals defined by `LightFlash.Delay`. The frame on which it is dealt is determined by `LightFlash.Delay`.
+  - `LightFlash.Size` determines size of the flash. Has to be above 0 to take effect, however values that produce visible changes/results are increments of 4 in range of 81 to 252.
+  - `LightFlash.Red/Green/Blue` can be used to toggle color channels off and thus alter color of the light flash. If `LightFlash.Black` is set to true the flash will be black regardless of other settings.
+
+In `artmd.ini`:
+```ini
+[SOMEANIM]                    ; AnimationType
+LightFlash.Delay=-1           ; integer, animation frames
+LightFlash.OncePerLoop=false  ; boolean
+LightFlash.Size=0             ; integer
+LightFlash.Red=true           ; boolean
+LightFlash.Green=true         ; boolean
+LightFlash.Blue=true          ; boolean
+LightFlash.Black=false        ; boolean
+```
+
 ### Play sound as a detached sound event
 
 - It is now possible for animation to play a sound that is not attached to an audio event handler by using `DetachedReport`. By default animation `Report` / `StartSound` is played by an audio event handler, which allows the sound to loop and play at correct location even if it changes after its initial creation. This can also cause issues with animations that chain different types through `Next`, as the audio event handler resets when the animation restarts.

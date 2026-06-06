@@ -7,6 +7,7 @@
 #include <Utilities/TemplateDef.h>
 
 #include <New/Type/Affiliated/CreateUnitTypeClass.h>
+#include <New/Type/Affiliated/LightFlashTypeClass.h>
 
 enum class AttachedAnimPosition : BYTE
 {
@@ -74,6 +75,9 @@ public:
 	Nullable<bool> TheaterPalette;
 	Valueable<int> Tiled_Interval;
 	Valueable<bool> Tiled_AlignToCenter;
+	std::unique_ptr<LightFlashTypeClass> LightFlash;
+	Valueable<int> LightFlash_Delay;
+	Valueable<bool> LightFlash_OncePerLoop;
 
 	AnimTypeExt(AnimTypeClass* OwnerObject) : ObjectTypeExt(OwnerObject)
 		, Palette { CustomPalette::PaletteMode::Temperate }
@@ -118,6 +122,9 @@ public:
 		, TheaterPalette {}
 		, Tiled_Interval { 0 }
 		, Tiled_AlignToCenter { false }
+		, LightFlash { nullptr }
+		, LightFlash_Delay { -1 }
+		, LightFlash_OncePerLoop { false }
 	{ }
 
 	virtual ~AnimTypeExt() = default;

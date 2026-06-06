@@ -104,6 +104,30 @@ void AnimExt::UpdateAsFiringAnim()
 	}
 }
 
+void AnimExt::ExtData::CreateLightFlash(LightFlashTypeClass* pFlash, int delay, bool oncePerLoop)
+{
+	if (!pFlash || pFlash->Size <= 0)
+		return;
+
+	auto const pThis = this->OwnerObject();
+
+	if (oncePerLoop)
+	{
+		if (pThis->Animation.Value == std::max(delay - 1, 1))
+			pFlash->CreateFlash(pThis->GetCoords());
+	}
+	else
+	{
+		this->LightFlashFrameCounter++;
+
+		if (this->LightFlashFrameCounter >= delay)
+		{
+			pFlash->CreateFlash(pThis->GetCoords());
+			this->LightFlashFrameCounter = 0;
+		}
+	}
+}
+
 //Modified from Ares
 bool AnimExt::SetAnimOwnerHouseKind(AnimClass* pAnim, HouseClass* pInvoker, HouseClass* pVictim, bool defaultToVictimOwner, bool defaultToInvokerOwner)
 {
@@ -456,6 +480,7 @@ void AnimExt::Serialize(T& Stm)
 		.Process(this->FiringAnim_LastFacing)
 		.Process(this->FiringAnim_LastCoords)
 		.Process(this->FirepowerMult)
+		.Process(this->LightFlashFrameCounter)
 		;
 }
 

@@ -3,6 +3,7 @@
 #include <Utilities/Enumerable.h>
 #include <Utilities/TemplateDef.h>
 #include <Ext/Rules/Body.h>
+#include <New/Type/Affiliated/LightFlashTypeClass.h>
 
 class ShieldTypeClass final : public Enumerable<ShieldTypeClass>
 {
@@ -37,12 +38,7 @@ public:
 	Damageable<AnimTypeClass*> IdleAnimDamaged;
 	ValueableVector<AnimTypeClass*> BreakAnim;
 	ValueableVector<AnimTypeClass*> HitAnim;
-	Valueable<bool> HitFlash;
-	Nullable<int> HitFlash_FixedSize;
-	Valueable<bool> HitFlash_Red;
-	Valueable<bool> HitFlash_Green;
-	Valueable<bool> HitFlash_Blue;
-	Valueable<bool> HitFlash_Black;
+	std::unique_ptr<LightFlashTypeClass> HitFlash;
 	Valueable<WeaponTypeClass*> BreakWeapon;
 	Valueable<double> AbsorbPercent;
 	Valueable<double> PassPercent;
@@ -94,12 +90,7 @@ public:
 		, IdleAnimDamaged { }
 		, BreakAnim { }
 		, HitAnim { }
-		, HitFlash { false }
-		, HitFlash_FixedSize {}
-		, HitFlash_Red { true }
-		, HitFlash_Green { true }
-		, HitFlash_Blue { true }
-		, HitFlash_Black { false }
+		, HitFlash { nullptr }
 		, BreakWeapon { }
 		, AbsorbPercent { 1.0 }
 		, PassPercent { 0.0 }
