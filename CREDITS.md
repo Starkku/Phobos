@@ -314,6 +314,7 @@ This page lists all the individual contributions to the project by their author.
   - Buildable-upon OverlayTypes
   - Attached animation draw offset customizations
   - Animation light flash
+  - AI trigger condition type extension
 - **Morton (MortonPL)**:
   - `XDrawOffset` for animations
   - Shield passthrough & absorption

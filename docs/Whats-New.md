@@ -728,6 +728,7 @@ HideShakeEffects=false           ; boolean
 - [Attached animation draw offset customizations](Fixed-or-Improved-Logics.md#draw-offset-customization) (by Starkku)
 - [Draw offset rules for AttachEffect animations](New-or-Enhanced-Logics.md#attached-effects) by (Starkku)
 - [Light flash on animations](New-or-Enhanced-Logics.md#light-flash-on-animation) (by Starkku)
+- [New AITriggerType conditions for tech buildings & bridge repair huts](AI-Scripting-and-Mapping.md#ai-trigger-condition-types) (by Starkku)
 
 #### Vanilla fixes:
 - Fixed sidebar not updating queued unit numbers when adding or removing units when the production is on hold (by CrimRecya)
