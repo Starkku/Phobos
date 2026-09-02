@@ -280,6 +280,7 @@
     <ClCompile Include="src\New\Type\Affiliated\CreateUnitTypeClass.cpp" />
     <ClCompile Include="src\New\Type\Affiliated\DroppodTypeClass.cpp" />
     <ClCompile Include="src\New\Type\Affiliated\InterceptorTypeClass.cpp" />
+    <ClCompile Include="src\New\Type\Affiliated\LightFlashTypeClass.cpp" />
     <ClCompile Include="src\New\Type\Affiliated\PassengerDeletionTypeClass.cpp" />
     <ClCompile Include="src\New\Type\Affiliated\TiberiumEaterTypeClass.cpp" />
     <ClCompile Include="src\New\Type\Affiliated\TypeConvertGroup.cpp" />
@@ -421,6 +422,7 @@
     <ClInclude Include="src\New\Type\Affiliated\CreateUnitTypeClass.h" />
     <ClInclude Include="src\New\Type\Affiliated\DroppodTypeClass.h" />
     <ClInclude Include="src\New\Type\Affiliated\InterceptorTypeClass.h" />
+    <ClInclude Include="src\New\Type\Affiliated\LightFlashTypeClass.h" />
     <ClInclude Include="src\New\Type\Affiliated\PassengerDeletionTypeClass.h" />
     <ClInclude Include="src\New\Type\Affiliated\TiberiumEaterTypeClass.h" />
     <ClInclude Include="src\New\Type\Affiliated\TypeConvertGroup.h" />

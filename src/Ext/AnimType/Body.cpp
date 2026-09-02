@@ -143,6 +143,21 @@ void AnimTypeExt::LoadFromINIFile(CCINIClass* pINI)
 	{
 		this->CreateUnitType.reset();
 	}
+
+	this->LightFlash_Delay.Read(exINI, pID, "LightFlash.Delay");
+	this->LightFlash_OncePerLoop.Read(exINI, pID, "LightFlash.OncePerLoop");
+
+	if (this->LightFlash_Delay >= 0)
+	{
+		if (this->LightFlash == nullptr)
+			this->LightFlash = std::make_unique<LightFlashTypeClass>();
+
+		this->LightFlash->LoadFromINI(pINI, pID, "LightFlash", "Size");
+	}
+	else if (this->LightFlash.get())
+	{
+		this->LightFlash.reset();
+	}
 }
 
 template <typename T>
@@ -199,6 +214,9 @@ void AnimTypeExt::Serialize(T& Stm)
 		.Process(this->TheaterPalette)
 		.Process(this->Tiled_Interval)
 		.Process(this->Tiled_AlignToCenter)
+		.Process(this->LightFlash)
+		.Process(this->LightFlash_Delay)
+		.Process(this->LightFlash_OncePerLoop)
 		;
 }
 

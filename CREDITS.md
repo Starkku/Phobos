@@ -313,6 +313,7 @@ This page lists all the individual contributions to the project by their author.
   - Randomized particle images
   - Buildable-upon OverlayTypes
   - Attached animation draw offset customizations
+  - Animation light flash
 - **Morton (MortonPL)**:
   - `XDrawOffset` for animations
   - Shield passthrough & absorption

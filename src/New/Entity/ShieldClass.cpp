@@ -290,27 +290,10 @@ int ShieldClass::ReceiveDamage(args_ReceiveDamage* args)
 		}
 		else
 		{
-			if (pType->HitFlash && pWHExt->Shield_HitFlash)
-			{
-				const int size = pType->HitFlash_FixedSize.Get((shieldDamage * 2));
-				SpotlightFlags flags = SpotlightFlags::NoColor;
+			const auto pFlash = pType->HitFlash.get();
 
-				if (pType->HitFlash_Black)
-				{
-					flags = SpotlightFlags::NoColor;
-				}
-				else
-				{
-					if (!pType->HitFlash_Red)
-						flags = SpotlightFlags::NoRed;
-					if (!pType->HitFlash_Green)
-						flags |= SpotlightFlags::NoGreen;
-					if (!pType->HitFlash_Blue)
-						flags |= SpotlightFlags::NoBlue;
-				}
-
-				MapClass::FlashbangWarheadAt(size, pWH, pTechno->Location, true, flags);
-			}
+			if (pFlash && pWHExt->Shield_HitFlash)
+				pFlash->CreateFlash(pTechno->Location, shieldDamage * 2);
 
 			if (!pWHExt->Shield_SkipHitAnim)
 				this->WeaponNullifyAnim(pWHExt->Shield_HitAnim);
