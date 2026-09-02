@@ -720,10 +720,14 @@ HideShakeEffects=false           ; boolean
 - [Disable AlphaImage during Buildup](Fixed-or-Improved-Logics.md#disable-alphaimage-during-buildup) (by Noble_Fish)
 - [Reload speed adjustment on promotion](New-or-Enhanced-Logics.md#reload-speed-adjustment-on-promotion) (by Nuke)
 - Allowed `(Pre)ProductionAnim` animations to use `Powered` & `PoweredLight/Effect/Special` keys (by Noble_Fish)
+<<<<<<< HEAD
 - `<Player @ X>` can now be used as owner for triggers on skirmish and multiplayer maps (by Starkku)
 - [Subterranean unit detection animation](New-or-Enhanced-Logics.md#subterranean-unit-detection-animation) by Starkku
 - [Improvements to stationary unit logic](Fixed-or-Improved-Logics.md#stationary-units) (by Starkku)
 - [Randomized ParticleType images](Fixed-or-Improved-Logics.md#randomized-particle-images) (by Starkku)
+=======
+- [Buildable-upon OverlayTypes](Fixed-or-Improved-Logics.md#buildable-upon-overlaytypes) (by Starkku)
+>>>>>>> feature/build-on-overlays
 
 #### Vanilla fixes:
 - Fixed sidebar not updating queued unit numbers when adding or removing units when the production is on hold (by CrimRecya)
