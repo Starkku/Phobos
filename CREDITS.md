@@ -309,6 +309,7 @@ This page lists all the individual contributions to the project by their author.
   - `ProjectileRange` weapon range modifiers interaction fix
   - Berzerk duration stacking behaviour customization
   - AI superweapon targeting improvements
+  - Subterranean unit detection animation
 - **Morton (MortonPL)**:
   - `XDrawOffset` for animations
   - Shield passthrough & absorption

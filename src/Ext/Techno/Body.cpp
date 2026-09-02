@@ -679,6 +679,41 @@ void TechnoExt::ResetDelayedFireTimer()
 	}
 }
 
+void TechnoExt::ExtData::UpdateSubterraneanDetectAnim(bool shouldRemoveAnim)
+{
+	auto const pAnimType = this->TypeExtData->SubterraneanDetectAnim.Get(RulesExt::Global()->SubterraneanDetectAnim);
+
+	if (!pAnimType)
+		return;
+
+	if (shouldRemoveAnim)
+	{
+		if (this->SubterraneanDetectAnim)
+		{
+			this->SubterraneanDetectAnim->UnInit();
+			this->SubterraneanDetectAnim = nullptr;
+		}
+
+		return;
+	}
+
+	auto const pThis = this->OwnerObject();
+
+	if (!this->SubterraneanDetectAnim)
+	{
+		auto const pAnim = GameCreate<AnimClass>(pAnimType, pThis->Location);
+		pAnim->SetOwnerObject(pThis);
+		auto const pAnimExt = AnimExt::ExtMap.Find(pAnim);
+		pAnim->Owner = pThis->Owner;
+		pAnimExt->SetInvoker(pThis);
+		this->SubterraneanDetectAnim = pAnim;
+	}
+
+	auto const pCurrentHouse = HouseClass::CurrentPlayer;
+	bool detected = !pThis->Owner->IsAlliedWith(pCurrentHouse) && pThis->GetCell()->Sensors_InclHouse(HouseClass::CurrentPlayer->ArrayIndex);
+	this->SubterraneanDetectAnim->Invisible = !detected;
+}
+
 void TechnoExt::CreateDelayedFireAnim(TechnoClass* pThis, AnimTypeClass* pAnimType, int weaponIndex, bool attach, bool center, bool removeOnNoDelay, bool onTurret, CoordStruct firingCoords)
 {
 	if (pAnimType)
@@ -932,7 +967,7 @@ struct DummyExtHere
 	char _pad0[0x50];
 	CDTimerClass DisableWeaponsTimer;
 	char _pad1[0x40];
-	bool DriverKilled; 
+	bool DriverKilled;
 };
 
 struct DummyTypeExtHere
@@ -1194,6 +1229,7 @@ void TechnoExt::Serialize(T& Stm)
 		.Process(this->DelayedFireTimer)
 		.Process(this->DelayedFireWeaponIndex)
 		.Process(this->CurrentDelayedFireAnim)
+		.Process(this->SubterraneanDetectAnim)
 		.Process(this->DropCrate)
 		.Process(this->DropCrateType)
 		.Process(this->AttachedEffectInvokerCount)
@@ -1272,6 +1308,9 @@ DEFINE_HOOK(0x710415, TechnoClass_DetachAnim, 0x6)
 
 	if (pExt->CurrentDelayedFireAnim == pTarget)
 		pExt->CurrentDelayedFireAnim = nullptr;
+
+	if (pExt->SubterraneanDetectAnim == pTarget)
+		pExt->SubterraneanDetectAnim = nullptr;
 
 	return 0;
 }

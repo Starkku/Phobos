@@ -2605,6 +2605,19 @@ IsVoiceCreatedGlobal=false   ; boolean
 VoiceCreated=                ; Sound entry
 ```
 
+### Subterranean unit detection animation
+
+- Animation can now be played on subterranean units for players that are not allied with the owner of the unit and can detect it with techno that has `SensorsSight`.
+
+In `rulesmd.ini`:
+```ini
+[AudioVisual]
+SubterraneanDetectAnim=  ; AnimationType
+
+[SOMETECHNO]             ; TechnoType
+SubterraneanDetectAnim=  ; AnimationType
+```
+
 ### Targeting limitation for berzerk technos
 
 - Now you can specify which houses berzerk's technos can target and fire.
