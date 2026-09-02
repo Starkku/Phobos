@@ -14,7 +14,7 @@
 #include <Ext/Rules/Body.h>
 
 #ifdef TESTING_BUILD
-bool HideWarning = false;
+bool HideWarning = true; // false;
 #endif
 
 HANDLE Phobos::hInstance = 0;
