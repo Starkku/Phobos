@@ -310,6 +310,7 @@ This page lists all the individual contributions to the project by their author.
   - Berzerk duration stacking behaviour customization
   - AI superweapon targeting improvements
   - Subterranean unit detection animation
+  - Randomized particle images
 - **Morton (MortonPL)**:
   - `XDrawOffset` for animations
   - Shield passthrough & absorption

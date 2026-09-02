@@ -723,6 +723,7 @@ HideShakeEffects=false           ; boolean
 - `<Player @ X>` can now be used as owner for triggers on skirmish and multiplayer maps (by Starkku)
 - [Subterranean unit detection animation](New-or-Enhanced-Logics.md#subterranean-unit-detection-animation) by Starkku
 - [Improvements to stationary unit logic](Fixed-or-Improved-Logics.md#stationary-units) (by Starkku)
+- [Randomized ParticleType images](Fixed-or-Improved-Logics.md#randomized-particle-images) (by Starkku)
 
 #### Vanilla fixes:
 - Fixed sidebar not updating queued unit numbers when adding or removing units when the production is on hold (by CrimRecya)

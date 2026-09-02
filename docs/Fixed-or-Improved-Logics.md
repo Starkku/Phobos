@@ -1596,6 +1596,16 @@ In `rulesmd.ini`:
 Gas.MaxDriftSpeed=2    ; integer (TS default is 5)
 ```
 
+### Randomized particle images
+
+- Particles that support using `.shp` images can now display a random image from list of filenames defined in `RandomImages`.
+
+In `rulesmd.ini`:
+```ini
+[SOMEPARTICLE]  ; ParticleType
+RandomImages=   ; List of filenames - excluding the .shp extension
+```
+
 ## Projectiles
 
 ### Airburst & Splits
