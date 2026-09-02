@@ -979,7 +979,10 @@ void TechnoExt::UpdateAttachEffects()
 	}
 
 	if (requiresRecalc)
+	{
 		this->RecalculateStatMultipliers();
+		this->UpdateAEAnimDrawingLogic();
+	}
 
 	if (markForRedraw)
 	{
@@ -1009,6 +1012,7 @@ void TechnoExt::UpdateSelfOwnedAttachEffects()
 	std::vector<std::unique_ptr<AttachEffectClass>>::iterator it;
 	std::vector<AEWeaponParams> expireWeapons;
 	bool requiresRecalc = false;
+	int removeCount = 0;
 
 	// Delete ones on old type and not on current.
 	for (it = this->AttachedEffects.begin(); it != this->AttachedEffects.end(); )
@@ -1042,6 +1046,7 @@ void TechnoExt::UpdateSelfOwnedAttachEffects()
 				}
 			}
 
+			removeCount++;
 			it = this->AttachedEffects.erase(it);
 		}
 		else
@@ -1057,11 +1062,16 @@ void TechnoExt::UpdateSelfOwnedAttachEffects()
 		WeaponTypeExt::DetonateAt(info.Weapon, coords, info.Invoker, info.InvokerHouse, pThis);
 	}
 
-	if (requiresRecalc)
-		this->RecalculateStatMultipliers();
-
 	// Add new ones.
-	AttachEffectClass::Attach(pThis, pThis->Owner, pThis, pThis, pTypeExt->AttachEffects, true);
+	const int count = AttachEffectClass::Attach(pThis, pThis->Owner, pThis, pThis, pTypeExt->AttachEffects);
+
+	if (!count && removeCount > 0)
+	{
+		if (requiresRecalc)
+			this->RecalculateStatMultipliers();
+
+		this->UpdateAEAnimDrawingLogic();
+	}
 }
 
 // Updates CumulativeAnimations AE's on techno.
@@ -1106,6 +1116,15 @@ void TechnoExt::UpdateCumulativeAttachEffects(AttachEffectTypeClass* pAttachEffe
 
 		if (createAnim)
 			pAELargestDuration->CreateAnim();
+	}
+}
+
+// Update AttachEffect animation drawing logic.
+void TechnoExt::ExtData::UpdateAEAnimDrawingLogic()
+{
+	for (auto const& attachEffect : this->AttachedEffects)
+	{
+		attachEffect->UpdateConditionalAnimDrawingLogic();
 	}
 }
 

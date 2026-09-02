@@ -312,6 +312,7 @@ This page lists all the individual contributions to the project by their author.
   - Subterranean unit detection animation
   - Randomized particle images
   - Buildable-upon OverlayTypes
+  - Attached animation draw offset customizations
 - **Morton (MortonPL)**:
   - `XDrawOffset` for animations
   - Shield passthrough & absorption
