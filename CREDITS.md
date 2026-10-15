@@ -317,6 +317,7 @@ This page lists all the individual contributions to the project by their author.
   - Subterranean unit detection animation
   - Randomized particle images
   - Animation light flash
+  - AI trigger condition type extension
 - **Morton (MortonPL)**:
   - `XDrawOffset` for animations
   - Shield passthrough & absorption
