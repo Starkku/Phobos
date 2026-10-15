@@ -43,7 +43,7 @@ std::vector<int> SWTypeExt::WeightedRollsHandler(ValueableVector<float>* rolls, 
 // =============================
 // Ares 0.A helpers
 // Inhibitors check
-bool SWTypeExt::IsInhibitor(HouseClass* pOwner, TechnoClass* pTechno, TechnoTypeClass* pType) const
+bool SWTypeExt::IsInhibitorEligible(HouseClass* pOwner, TechnoClass* pTechno) const
 {
 	if (pTechno->IsAlive && pTechno->Health > 0 && !pTechno->InLimbo && !pTechno->Deactivated)
 	{
@@ -62,9 +62,9 @@ bool SWTypeExt::IsInhibitor(HouseClass* pOwner, TechnoClass* pTechno, TechnoType
 	return false;
 }
 
-bool SWTypeExt::IsInhibitorEligible(HouseClass* pOwner, const CellStruct& coords, TechnoClass* pTechno, TechnoTypeClass* pType, double range) const
+bool SWTypeExt::IsInhibitorEligibleInRange(HouseClass* pOwner, const CellStruct& coords, TechnoClass* pTechno, double range) const
 {
-	if (this->IsInhibitor(pOwner, pTechno, pType))
+	if (this->IsInhibitorEligible(pOwner, pTechno))
 	{
 		// get the inhibitor's center
 		const auto center = pTechno->GetCenterCoords();
@@ -88,7 +88,7 @@ bool SWTypeExt::HasInhibitor(HouseClass* pOwner, const CellStruct& coords) const
 			{
 				auto const& items = pTypeExt->Array;
 				return std::any_of(items.begin(), items.end(), [=, &coords](TechnoClass* pTechno)
-					{ return this->IsInhibitorEligible(pOwner, coords, pTechno, pType, (double)range); }
+					{ return this->IsInhibitorEligibleInRange(pOwner, coords, pTechno, (double)range); }
 				);
 			}
 		}
@@ -103,7 +103,7 @@ bool SWTypeExt::HasInhibitor(HouseClass* pOwner, const CellStruct& coords) const
 			{
 				auto const& items = pTypeExt->Array;
 				return std::any_of(items.begin(), items.end(), [=, &coords](TechnoClass* pTechno)
-					{ return this->IsInhibitorEligible(pOwner, coords, pTechno, pType, (double)range); }
+					{ return this->IsInhibitorEligibleInRange(pOwner, coords, pTechno, (double)range); }
 				);
 			}
 		}
@@ -113,7 +113,7 @@ bool SWTypeExt::HasInhibitor(HouseClass* pOwner, const CellStruct& coords) const
 }
 
 // Designators check
-bool SWTypeExt::IsDesignator(HouseClass* pOwner, TechnoClass* pTechno, TechnoTypeClass* pType) const
+bool SWTypeExt::IsDesignatorEligible(HouseClass* pOwner, TechnoClass* pTechno) const
 {
 	if (pTechno->Owner == pOwner && pTechno->IsAlive && pTechno->Health > 0 && !pTechno->InLimbo && !pTechno->Deactivated)
 		return true;
@@ -121,9 +121,9 @@ bool SWTypeExt::IsDesignator(HouseClass* pOwner, TechnoClass* pTechno, TechnoTyp
 	return false;
 }
 
-bool SWTypeExt::IsDesignatorEligible(HouseClass* pOwner, const CellStruct& coords, TechnoClass* pTechno, TechnoTypeClass* pType, double range) const
+bool SWTypeExt::IsDesignatorEligibleInRange(HouseClass* pOwner, const CellStruct& coords, TechnoClass* pTechno, double range) const
 {
-	if (this->IsDesignator(pOwner, pTechno, pType))
+	if (this->IsDesignatorEligible(pOwner, pTechno))
 	{
 		// get the designator's center
 		const auto center = pTechno->GetCenterCoords();
@@ -147,7 +147,7 @@ bool SWTypeExt::HasDesignator(HouseClass* pOwner, const CellStruct& coords) cons
 			{
 				auto const& items = pTypeExt->Array;
 				return std::any_of(items.begin(), items.end(), [=, &coords](TechnoClass* pTechno)
-					{ return this->IsDesignatorEligible(pOwner, coords, pTechno, pType, (double)range); }
+					{ return this->IsDesignatorEligibleInRange(pOwner, coords, pTechno, (double)range); }
 				);
 			}
 		}
@@ -162,7 +162,7 @@ bool SWTypeExt::HasDesignator(HouseClass* pOwner, const CellStruct& coords) cons
 			{
 				auto const& items = pTypeExt->Array;
 				return std::any_of(items.begin(), items.end(), [=, &coords](TechnoClass* pTechno)
-					{ return this->IsDesignatorEligible(pOwner, coords, pTechno, pType, (double)range); }
+					{ return this->IsDesignatorEligibleInRange(pOwner, coords, pTechno, (double)range); }
 				);
 			};
 		}
@@ -390,7 +390,7 @@ bool SWTypeExt::EligibleTargetForPsyDomSW(TechnoClass* pTechno)
 
 	if (auto const pSuper = SWTypeExt::CurrentAIEvaluatedSW)
 	{
-		auto const pTypeExt = SWTypeExt::ExtMap.Find(pSuper->Type);
+		auto const pTypeExt = SWTypeExt::Fetch(pSuper->Type);
 		auto const pOwner = pSuper->Owner;
 		auto const pTargetHouse = pTechno->Owner;
 
@@ -437,7 +437,7 @@ bool SWTypeExt::HandleAITargetingOverrides(SuperClass* pSuper, SuperWeaponAITarg
 	// Fix LightningRandom behaving suboptimally with explicit Designators.
 	if (aiTargetingType == SuperWeaponAITargetingMode::LightningRandom)
 	{
-		auto const pTypeExt = SWTypeExt::ExtMap.Find(pSuper->Type);
+		auto const pTypeExt = SWTypeExt::Fetch(pSuper->Type);
 
 		if (pTypeExt->SW_AITargeting_Random_SnapOnDesignators)
 			return pTypeExt->PickDesignatorCell(pSuper->Owner, pTypeExt->SW_AITargeting_Random_PickFirstDesignator, targetCell, isSuccessful);
@@ -449,21 +449,22 @@ bool SWTypeExt::HandleAITargetingOverrides(SuperClass* pSuper, SuperWeaponAITarg
 // Overrides target cell with a cell of designator or one in designator range not affected by inhibitor.
 bool SWTypeExt::ExtData::PickDesignatorCell(HouseClass* pOwner, bool pickFirst, CellStruct& targetCell, bool& isSuccessful) const
 {
-	if (!this->SW_Designators.empty())
+	if (!this->SW_Designators.empty() || this->SW_AnyDesignator)
 	{
 		std::vector<TechnoClass*> inhibited;
 		std::vector<CellStruct> designatorCells;
 
-		// Evaluate technos for designators.
-		for (auto* pTechno : TechnoClass::Array)
-		{
-			if (this->IsDesignator(pOwner, pTechno))
+		auto processDesignator = [&](TechnoClass* pTechno)
 			{
+				if (!this->IsDesignatorEligible(pOwner, pTechno))
+					return false;
+
 				auto const cell = pTechno->GetMapCoords();
 
 				if (this->HasInhibitor(pOwner, cell))
 				{
-					inhibited.push_back(pTechno); // Designator is in inhibitor range, defer evaluation.
+					// Cell is in inhibitor range, defer evaluation.
+					inhibited.push_back(pTechno);
 				}
 				else
 				{
@@ -476,6 +477,29 @@ bool SWTypeExt::ExtData::PickDesignatorCell(HouseClass* pOwner, bool pickFirst, 
 					}
 
 					designatorCells.push_back(cell);
+				}
+
+				return false;
+			};
+
+		if (this->SW_AnyDesignator)
+		{
+			for (auto* pTechno : TechnoClass::Array)
+			{
+				if (processDesignator(pTechno))
+					return true;
+			}
+		}
+		else
+		{
+			for (auto const pType : this->SW_Designators)
+			{
+				auto const pTypeExt = TechnoTypeExt::Fetch(pType);
+
+				for (auto* pTechno : pTypeExt->Array)
+				{
+					if (processDesignator(pTechno))
+						return true;
 				}
 			}
 		}
@@ -509,7 +533,7 @@ bool SWTypeExt::ExtData::PickDesignatorCell(HouseClass* pOwner, bool pickFirst, 
 			{
 				auto cell = pTechno->GetMapCoords();
 				auto const pType = pTechno->GetTechnoType();
-				auto const pTechnoTypeExt = TechnoTypeExt::ExtMap.Find(pType);
+				auto const pTechnoTypeExt = TechnoTypeExt::Fetch(pType);
 				short maxDistance = static_cast<short>(pTechnoTypeExt->DesignatorRange.Get(pType->Sight) + 0.5);
 
 				for (short dist = 1; dist <= maxDistance; ++dist)
