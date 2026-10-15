@@ -10,6 +10,8 @@ void ParticleTypeExt::Serialize(T& Stm)
 {
 	Stm
 		.Process(this->Gas_MaxDriftSpeed)
+		.Process(this->AlphaImage_IsLightFlash)
+		.Process(this->RandomImages)
 		;
 }
 
@@ -20,6 +22,8 @@ void ParticleTypeExt::LoadFromINIFile(CCINIClass* const pINI)
 	INI_EX exINI(pINI);
 
 	this->Gas_MaxDriftSpeed.Read(exINI, pSection, "Gas.MaxDriftSpeed");
+	this->AlphaImage_IsLightFlash.Read(exINI, pSection, "AlphaImage.IsLightFlash");
+	this->RandomImages.Read(exINI, pSection, "RandomImages");
 
 	if (pThis->StateAIAdvance == 0 && pThis->StartStateAI < pThis->EndStateAI)
 	{

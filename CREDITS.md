@@ -315,6 +315,7 @@ This page lists all the individual contributions to the project by their author.
   - Attached animation draw offset customizations
   - AI superweapon targeting improvements
   - Subterranean unit detection animation
+  - Randomized particle images
 - **Morton (MortonPL)**:
   - `XDrawOffset` for animations
   - Shield passthrough & absorption
