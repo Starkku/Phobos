@@ -318,6 +318,8 @@ void RulesExt::ExtData::LoadBeforeTypeData(RulesClass* pThis, CCINIClass* pINI)
 	this->Promote_VeteranAnimation.Read(exINI, GameStrings::AudioVisual, "Promote.VeteranAnimation");
 	this->Promote_EliteAnimation.Read(exINI, GameStrings::AudioVisual, "Promote.EliteAnimation");
 
+	this->SubterraneanDetectAnim.Read(exINI, GameStrings::AudioVisual, "SubterraneanDetectAnim");
+
 	this->DropPodTrailer.Read(exINI, GameStrings::General, "DropPodTrailer");
 	this->DropPodDefaultTrailer = AnimTypeClass::Find("SMOKEY");
 	this->PodImage = FileSystem::LoadSHPFile("POD.SHP");
@@ -920,6 +922,7 @@ void RulesExt::ExtData::Serialize(T& Stm)
 		.Process(this->DrawInsignia_UsePixelSelectionBracketDelta)
 		.Process(this->Promote_VeteranAnimation)
 		.Process(this->Promote_EliteAnimation)
+		.Process(this->SubterraneanDetectAnim)
 		.Process(this->AnimRemapDefaultColorScheme)
 		.Process(this->TimerBlinkColorScheme)
 		.Process(this->Buildings_DefaultDigitalDisplayTypes)

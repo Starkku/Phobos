@@ -2053,6 +2053,7 @@ HideShakeEffects=false           ; boolean
 - Customize turn rate when jumpjet vehicle crashing (by NetsuNegi)
 - Customize insignias palette (by Flactine & NetsuNegi)
 - Allowed deployable infantry without a deploy sequence to directly execute `Convert.Deploy` like deployable vehicles (by Noble_Fish)
+- [Subterranean unit detection animation](New-or-Enhanced-Logics.md#subterranean-unit-detection-animation) by Starkku
 
 #### Vanilla fixes:
 - Fixed the bug where a building with `Factory=BuildingType` owned by the AI did not play `ProductionAnim` when placing a produced building (by Noble_Fish)
