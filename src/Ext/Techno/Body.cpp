@@ -692,7 +692,7 @@ void TechnoExt::ExtData::UpdateSubterraneanDetectAnim(bool shouldRemoveAnim)
 	{
 		auto const pAnim = GameCreate<AnimClass>(pAnimType, pThis->Location);
 		pAnim->SetOwnerObject(pThis);
-		auto const pAnimExt = AnimExt::ExtMap.Find(pAnim);
+		auto const pAnimExt = AnimExt::Fetch(pAnim);
 		pAnim->Owner = pThis->Owner;
 		pAnimExt->SetInvoker(pThis);
 		this->SubterraneanDetectAnim = pAnim;
