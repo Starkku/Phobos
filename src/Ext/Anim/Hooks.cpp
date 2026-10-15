@@ -15,10 +15,15 @@ DEFINE_HOOK(0x423B95, AnimClass_AI_Early, 0x8)
 {
 	GET(AnimClass* const, pThis, ESI);
 
+	auto const pExt = AnimExt::Fetch(pThis);
+
 	if (ScenarioExt::Global()->FiringAnimUpdateCount > 0)
-		AnimExt::Fetch(pThis)->UpdateAsFiringAnim();
+		pExt->UpdateAsFiringAnim();
 
 	auto const pType = pThis->Type;
+	auto const pTypeExt = AnimTypeExt::Fetch(pType);
+	auto const pFlash = pTypeExt->LightFlash.get();
+	pExt->CreateLightFlash(pFlash, pTypeExt->LightFlash_Delay, pTypeExt->LightFlash_OncePerLoop);
 
 	AnimLoggingTemp::UniqueID = pThis->UniqueID;
 	AnimLoggingTemp::pType = pType;
@@ -26,7 +31,7 @@ DEFINE_HOOK(0x423B95, AnimClass_AI_Early, 0x8)
 	// Replace vanilla HideIfNoOre check.
 	if (pType->HideIfNoOre)
 	{
-		const int nThreshold = abs(AnimTypeExt::Fetch(pType)->HideIfNoOre_Threshold.Get());
+		const int nThreshold = abs(pTypeExt->HideIfNoOre_Threshold.Get());
 		pThis->Invisible = pThis->GetCell()->GetContainedTiberiumValue() <= nThreshold;
 	}
 

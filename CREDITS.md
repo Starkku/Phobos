@@ -316,6 +316,7 @@ This page lists all the individual contributions to the project by their author.
   - AI superweapon targeting improvements
   - Subterranean unit detection animation
   - Randomized particle images
+  - Animation light flash
 - **Morton (MortonPL)**:
   - `XDrawOffset` for animations
   - Shield passthrough & absorption
