@@ -377,6 +377,28 @@ public:
 		}
 		return Phobos::readBuffer[0] != 0;
 	}
+
+	// Reads a string and splits it into multiple fixed strings.
+	static bool ReadList(INIClass* pINI, const char* pSection, const char* pKey, std::vector<PhobosFixedString<Capacity>>& values, const char* pDefault = "")
+	{
+		if (!pINI->ReadString(pSection, pKey, pDefault, Phobos::readBuffer, Phobos::readLength) || INIClass::IsBlank(Phobos::readBuffer))
+			return false;
+
+		values.clear();
+
+		char* context = nullptr;
+		char* token = strtok_s(Phobos::readBuffer, ",", &context);
+
+		while (token)
+		{
+			if (!INIClass::IsBlank(token))
+				values.emplace_back(token);
+
+			token = strtok_s(nullptr, ",", &context);
+		}
+
+		return !values.empty();
+	}
 };
 
 // owns a resource. not copyable, but movable.

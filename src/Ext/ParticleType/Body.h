@@ -25,10 +25,14 @@ public:
 
 	Valueable<int> Gas_MaxDriftSpeed;
 	Valueable<bool> AlphaImage_IsLightFlash;
+	std::vector<PhobosFixedString<32>> RandomImageFilenames;
+	std::vector<SHPStruct*> RandomImages;
 
 	ParticleTypeExt(ParticleTypeClass* OwnerObject) : ObjectTypeExt(OwnerObject)
 		, Gas_MaxDriftSpeed { 2 }
 		, AlphaImage_IsLightFlash { false }
+		, RandomImageFilenames {}
+		, RandomImages {}
 	{ }
 
 	virtual ~ParticleTypeExt() = default;
@@ -37,6 +41,8 @@ public:
 
 	virtual void LoadFromStream(PhobosStreamReader& Stm) override;
 	virtual void SaveToStream(PhobosStreamWriter& Stm) override;
+
+	void LoadRandomImages();
 
 private:
 	template <typename T>
