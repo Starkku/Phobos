@@ -2059,6 +2059,7 @@ HideShakeEffects=false           ; boolean
 - [Improvements to stationary unit logic](Fixed-or-Improved-Logics.md#stationary-units) (by Starkku)
 - [Light flash toggle for ParticleType alpha images](User-Interface.md#visual-effects-toggling) (by Starkku)
 - [Subterranean unit detection animation](New-or-Enhanced-Logics.md#subterranean-unit-detection-animation) by Starkku
+- [Randomized ParticleType images](Fixed-or-Improved-Logics.md#randomized-particle-images) (by Starkku)
 
 #### Vanilla fixes:
 - Fixed the bug where a building with `Factory=BuildingType` owned by the AI did not play `ProductionAnim` when placing a produced building (by Noble_Fish)

@@ -11,6 +11,7 @@ void ParticleTypeExt::Serialize(T& Stm)
 	Stm
 		.Process(this->Gas_MaxDriftSpeed)
 		.Process(this->AlphaImage_IsLightFlash)
+		.Process(this->RandomImageFilenames)
 		;
 }
 
@@ -22,6 +23,9 @@ void ParticleTypeExt::LoadFromINIFile(CCINIClass* const pINI)
 
 	this->Gas_MaxDriftSpeed.Read(exINI, pSection, "Gas.MaxDriftSpeed");
 	this->AlphaImage_IsLightFlash.Read(exINI, pSection, "AlphaImage.IsLightFlash");
+
+	PhobosFixedString<32>::ReadList(pINI, pSection, "RandomImages", this->RandomImageFilenames);
+	this->LoadRandomImages();
 
 	if (pThis->StateAIAdvance == 0 && pThis->StartStateAI < pThis->EndStateAI)
 	{
@@ -35,6 +39,7 @@ void ParticleTypeExt::LoadFromStream(PhobosStreamReader& Stm)
 {
 	ObjectTypeExt::LoadFromStream(Stm);
 	this->Serialize(Stm);
+	this->LoadRandomImages();
 }
 
 void ParticleTypeExt::SaveToStream(PhobosStreamWriter& Stm)
@@ -53,6 +58,26 @@ bool ParticleTypeExt::SaveGlobals(PhobosStreamWriter& Stm)
 {
 	return Stm
 		.Success();
+}
+
+void ParticleTypeExt::LoadRandomImages()
+{
+	if (this->RandomImageFilenames.size() < 1)
+		return;
+
+	this->RandomImages.clear();
+
+	for (auto const& filename : this->RandomImageFilenames)
+	{
+		std::string filenameWithExtension(filename);
+		auto const length = filenameWithExtension.length();
+
+		if (length < 4 || _stricmp(filenameWithExtension.c_str() + length - 4, ".shp") != 0)
+			filenameWithExtension += ".shp";
+
+		auto const pSHP = FileSystem::LoadSHPFile(filenameWithExtension.c_str());
+		this->RandomImages.push_back(pSHP);
+	}
 }
 
 // =============================
