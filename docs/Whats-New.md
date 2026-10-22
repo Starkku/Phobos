@@ -2061,6 +2061,7 @@ HideShakeEffects=false           ; boolean
 - [Subterranean unit detection animation](New-or-Enhanced-Logics.md#subterranean-unit-detection-animation) by Starkku
 - [Randomized ParticleType images](Fixed-or-Improved-Logics.md#randomized-particle-images) (by Starkku)
 - [Light flash on animations](New-or-Enhanced-Logics.md#light-flash-on-animation) (by Starkku)
+- [New AITriggerType conditions for tech buildings & bridge repair huts](AI-Scripting-and-Mapping.md#ai-trigger-condition-types) (by Starkku)
 
 #### Vanilla fixes:
 - Fixed the bug where a building with `Factory=BuildingType` owned by the AI did not play `ProductionAnim` when placing a produced building (by Noble_Fish)
