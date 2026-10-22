@@ -39,7 +39,8 @@ public:
 	DirStruct FiringAnim_LastFacing;
 	CoordStruct FiringAnim_LastCoords;
 	double FirepowerMult;
-		Point2D AEDrawOffset;
+	Point2D AEDrawOffset;
+	int LightFlashFrameCounter;
 
 	AnimExt(AnimClass* OwnerObject) : ObjectExt(OwnerObject)
 		, DeathUnitFacing { 0 }
@@ -60,7 +61,8 @@ public:
 		, FiringAnim_LastFacing {}
 		, FiringAnim_LastCoords {}
 		, FirepowerMult { 1.0 }
-			, AEDrawOffset { Point2D::Empty }
+		, AEDrawOffset { Point2D::Empty }
+		, LightFlashFrameCounter { 0 }
 	{ }
 
 	void SetInvoker(TechnoClass* pInvoker);
@@ -69,6 +71,7 @@ public:
 	void DeleteAttachedSystem();
 
 	void UpdateAsFiringAnim();
+	void CreateLightFlash(LightFlashTypeClass* pFlash, int delay, bool oncePerLoop);
 
 	virtual ~AnimExt() override;
 

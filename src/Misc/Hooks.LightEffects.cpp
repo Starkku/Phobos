@@ -61,7 +61,7 @@ DEFINE_HOOK(0x5F5053, ObjectClass_Unlimbo_AlphaImage, 0x6)
 
 DEFINE_HOOK(0x48A62E, DoFlash_CombatLightOptions, 0x6)
 {
-	enum { Continue = 0x48A668, SkipFlash = 0x48A6FA };
+	enum { Continue = 0x48A66E, SkipFlash = 0x48A6FA };
 
 	if (Phobos::Config::HideLightFlashEffects)
 		return SkipFlash;
@@ -102,7 +102,13 @@ DEFINE_HOOK(0x48A62E, DoFlash_CombatLightOptions, 0x6)
 
 	// (bitmask & 0xF) != 0) is true if any color channel is disabled.
 	if (((detailLevel <= currentDetailLevel && fpsOK) || (!checkColored && ((bitmask & 0xF) != 0))) && (forced || (pWH && pWH->Bright)))
+	{
+		// Allows calling this function without Warhead.
+		double lightSize = pWH ? pWH->CombatLightSize : 0.0;
+		__asm { fld lightSize }
+
 		return Continue;
+	}
 
 	return SkipFlash;
 }
