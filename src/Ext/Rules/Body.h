@@ -209,6 +209,7 @@ public:
 		Valueable<AffectedHouse> RadialIndicatorVisibility;
 		Valueable<bool> DrawTurretShadow;
 		ValueableIdx<ColorScheme> AnimRemapDefaultColorScheme;
+		Valueable<bool> AnimRemapUseInvokerFallback;
 		ValueableIdx<ColorScheme> TimerBlinkColorScheme;
 
 		ValueableVector<DigitalDisplayTypeClass*> Buildings_DefaultDigitalDisplayTypes;
@@ -762,6 +763,7 @@ public:
 			, Promote_EliteAnimation {}
 			, SubterraneanDetectAnim { nullptr }
 			, AnimRemapDefaultColorScheme { 0 }
+			, AnimRemapUseInvokerFallback { false }
 			, TimerBlinkColorScheme { 5 }
 			, Buildings_DefaultDigitalDisplayTypes {}
 			, Infantry_DefaultDigitalDisplayTypes {}

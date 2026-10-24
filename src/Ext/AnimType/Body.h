@@ -59,6 +59,7 @@ public:
 	Valueable<bool> SplashAnims_PickRandom;
 	Valueable<ParticleSystemTypeClass*> AttachedSystem;
 	Valueable<bool> AltPalette_ApplyLighting;
+	Nullable<bool> AltPalette_UseInvokerFallback;
 	Valueable<OwnerHouseKind> MakeInfantryOwner;
 	Valueable<bool> ExtraShadow;
 	ValueableIdx<VocClass> DetachedReport;
@@ -114,6 +115,7 @@ public:
 		, SplashAnims_PickRandom { false }
 		, AttachedSystem {}
 		, AltPalette_ApplyLighting { false }
+		, AltPalette_UseInvokerFallback {}
 		, MakeInfantryOwner { OwnerHouseKind::Victim }
 		, ExtraShadow { true }
 		, DetachedReport {}
