@@ -318,6 +318,7 @@ This page lists all the individual contributions to the project by their author.
   - Randomized particle images
   - Animation light flash
   - AI trigger condition type extension
+  - `Arcing` weapon rangefinding fix
 - **Morton (MortonPL)**:
   - `XDrawOffset` for animations
   - Shield passthrough & absorption
