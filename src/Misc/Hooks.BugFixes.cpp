@@ -1788,6 +1788,13 @@ DEFINE_HOOK(0x44E910, BuildingClass_PointerExpired_C4ExpFix, 0x6)
 	return removed ? 0 : 0x44E916;
 }
 
+DEFINE_HOOK(0x75F635, WaveClass_PointerExpired_TargetFix, 0x6)
+{
+	GET_STACK(const bool, removed, STACK_OFFSET(0x0, 0x10));
+	// Skip the reset of WaveClass::Target if !removed.
+	return removed ? 0 : 0x75F643;
+}
+
 DEFINE_HOOK(0x725961, AbstractClass_AnnouncePointerExpired_BombList, 0x6)
 {
 	GET(const bool, removed, EDI);
@@ -2149,18 +2156,20 @@ DEFINE_HOOK(0x710352, FootClass_ImbueLocomotor_FixSomething, 0x7)
 	return 0;
 }
 
-DEFINE_JUMP(LJMP, 0x73C41B, 0x73C431)
+#pragma region Unit Shadow Fix
 
-DEFINE_HOOK(0x73C43F, UnitClass_DrawAsVXL_Shadow_IsLocomotorFix2, 0x6)
+DEFINE_HOOK_AGAIN(0x73C43F, UnitClass_DrawAsVXL_Shadow_IsLocomotorFix, 0x6)
+DEFINE_HOOK(0x73C41B, UnitClass_DrawAsVXL_Shadow_IsLocomotorFix, 0x5)
 {
-	enum { SkipGameCode = 0x73C445 };
-
 	GET(UnitClass*, pThis, EBP);
-	GET(UnitTypeClass*, pType, EAX);
 
-	R->AL(pType->BalloonHover || pThis->IsAttackedByLocomotor);
-	return SkipGameCode;
+	if (pThis->IsAttackedByLocomotor)
+		return R->Origin() == 0x73C41B ? 0x73C431 : 0x73C459;
+
+	return 0;
 }
+
+#pragma endregion
 
 DEFINE_HOOK(0x737E2A, UnitClass_ReceiveDamage_Sinkable_BridgeOrHeight, 0x6)
 {
