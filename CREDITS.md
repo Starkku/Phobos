@@ -319,6 +319,7 @@ This page lists all the individual contributions to the project by their author.
   - Randomized particle images
   - Animation light flash
   - AI trigger condition type extension
+  - Distance-based weapon damage modifier
 - **Morton (MortonPL)**:
   - `XDrawOffset` for animations
   - Shield passthrough & absorption

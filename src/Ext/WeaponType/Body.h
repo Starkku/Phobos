@@ -129,6 +129,11 @@ public:
 	Valueable<bool> Abductor_ChangeOwner_IgnoreDriverKilled;
 	Valueable<bool> CanTarget_DriverKilled;
 
+	Valueable<Leptons> Damage_DistanceThreshold;
+	Valueable<int> Damage_DistanceExtraDamage;
+	Nullable<double> Damage_DistanceMultiplier;
+	Valueable<bool> Damage_UseAdditiveMultiplier;
+
 	WeaponTypeExt(WeaponTypeClass* OwnerObject) : AbstractTypeExt(OwnerObject)
 		, DiskLaser_Radius { DiskLaserClass::Radius }
 		, ProjectileRange { Leptons(100000) }
@@ -230,6 +235,10 @@ public:
 		, Abductor_ChangeOwner_ResetDriverKilled { true }
 		, Abductor_ChangeOwner_IgnoreDriverKilled { false }
 		, CanTarget_DriverKilled { true }
+		, Damage_DistanceThreshold { Leptons(0) }
+		, Damage_DistanceExtraDamage { 0 }
+		, Damage_DistanceMultiplier {}
+		, Damage_UseAdditiveMultiplier { false }
 	{ }
 
 	int GetBurstDelay(int burstIndex) const;

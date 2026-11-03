@@ -221,6 +221,11 @@ void WeaponTypeExt::LoadFromINIFile(CCINIClass* const pINI)
 	this->Abductor_ChangeOwner_IgnoreDriverKilled.Read(exINI, pSection, "Abductor.ChangeOwner.IgnoreDriverKilled");
 	this->CanTarget_DriverKilled.Read(exINI, pSection, "CanTarget.DriverKilled");
 
+	this->Damage_DistanceThreshold.Read(exINI, pSection, "Damage.DistanceThreshold");
+	this->Damage_DistanceExtraDamage.Read(exINI, pSection, "Damage.DistanceExtraDamage");
+	this->Damage_DistanceMultiplier.Read(exINI, pSection, "Damage.DistanceMultiplier");
+	this->Damage_UseAdditiveMultiplier.Read(exINI, pSection, "Damage.UseAdditiveMultiplier");
+
 	// handle SkipWeaponPicking
 	if (this->CanTarget != AffectedTarget::All || this->CanTargetHouses != AffectedHouse::All
 		|| this->CanTarget_MaxHealth < 1.0 || this->CanTarget_MinHealth > 0.0
@@ -341,6 +346,10 @@ void WeaponTypeExt::Serialize(T& Stm)
 		.Process(this->Abductor_ChangeOwner_ResetDriverKilled)
 		.Process(this->Abductor_ChangeOwner_IgnoreDriverKilled)
 		.Process(this->CanTarget_DriverKilled)
+		.Process(this->Damage_DistanceThreshold)
+		.Process(this->Damage_DistanceExtraDamage)
+		.Process(this->Damage_DistanceMultiplier)
+		.Process(this->Damage_UseAdditiveMultiplier)
 		;
 };
 

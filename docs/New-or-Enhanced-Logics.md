@@ -3865,6 +3865,24 @@ DelayedFire.OnlyOnInitialBurst=false   ; boolean
 AircraftTypes, due to their different attack patterns, will not wait for the delay to expire before attempting to fire and will instead continue without firing if the delay is too long.
 ```
 
+### Distance-based weapon damage modifier
+
+- It is now possible to have weapon's damage modified based on distance from weapon's projectile's source to its detonation point. Note that at the point this is calculated, firepower modifiers on the firing techno have already been calculated into the damage.
+  - `Damage.DistanceThreshold` determines intervals of distance at which the modifiers are applied. F.ex if distance is 4.5 cells and `Damage.DistanceThreshold` is set to 1.0, modifiers are applied 4 times.
+  - `Damage.DistanceExtraDamage` is flat damage added to weapon's damage.
+  - `Damage.DistanceMultiplier` is a multiplier to the weapon's damage.
+    - If `Damage.UseAdditiveMultiplier` is set to true, multiplier is calculated additively instead of cumulatively. F.ex if the modifiers are applied 4 times, a multiplier of 1.2 would result in overall multiplication factor of 1.2^4^ (≈ 2.0736) with cumulative multipliers, whereas with additive it would be 4 * 1.2 (= 4.8).
+
+
+In `rulesmd.ini`:
+```ini
+[SOMEWEAPON]                        ; WeaponType
+Damage.DistanceThreshold=0.0        ; floating point value, range in cells
+Damage.DistanceExtraDamage=0        ; integer
+Damage.DistanceMultiplier=          ; floating point value
+Damage.UseAdditiveMultiplier=false  ; boolean
+```
+
 ### Extra range
 
 - Now you can adjust weapon's range when the firer or target are under specific conditions. Only work during the attack process and cannot affect other behaviors such as path finding.

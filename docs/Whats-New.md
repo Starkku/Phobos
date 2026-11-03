@@ -2068,6 +2068,7 @@ PreserveCSFWhitespace=false      ; boolean
 - [Randomized ParticleType images](Fixed-or-Improved-Logics.md#randomized-particle-images) (by Starkku)
 - [Light flash on animations](New-or-Enhanced-Logics.md#light-flash-on-animation) (by Starkku)
 - [New AITriggerType conditions for tech buildings & bridge repair huts](AI-Scripting-and-Mapping.md#ai-trigger-condition-types) (by Starkku)
+- [Distance-based weapon damage modifier](New-or-Enhanced-Logics.md#distance-based-weapon-damage-modifier) (by Starkku)
 
 #### Vanilla fixes:
 - Fixed the bug that buildings with passengers cannot unload via the Deploy hotkey or command bar button (by Noble_Fish)

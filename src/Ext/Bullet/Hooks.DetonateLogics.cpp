@@ -29,6 +29,39 @@ DEFINE_HOOK(0x4690D4, BulletClass_Logics_NewChecks, 0x6)
 		}
 	}
 
+	if (auto const pWeapon = pBullet->WeaponType)
+	{
+		auto const pWeaponExt = WeaponTypeExt::Fetch(pWeapon);
+		int const threshold = pWeaponExt->Damage_DistanceThreshold.Get();
+
+		if (threshold > 0)
+		{
+			auto const coordSource = pBullet->SourceCoords;
+			double const distance = Math::sqrt(pCoords->DistanceFromSquared(coordSource));
+			int count = static_cast<int>(distance / threshold);
+			double mult = 1.0;
+			int add = 0;
+
+			for (int i = 0; i < count; i++)
+			{
+				add += pWeaponExt->Damage_DistanceExtraDamage;
+
+				if (pWeaponExt->Damage_DistanceMultiplier.isset())
+				{
+					double distMult = pWeaponExt->Damage_DistanceMultiplier.Get();
+
+					if (pWeaponExt->Damage_UseAdditiveMultiplier)
+						mult += distMult;
+					else
+						mult *= distMult;
+				}
+			}
+
+			pBullet->Health = static_cast<int>(pBullet->Health * mult);
+			pBullet->Health += add;
+		}
+	}
+
 	// Check for ScreenShake
 	if (Phobos::Config::HideShakeEffects)
 		return SkipShaking;
@@ -859,7 +892,7 @@ DEFINE_HOOK(0x469EC0, BulletClass_Logics_AirburstWeapon, 0x6)
 
 		// Cache all pointer variables before the loop
 		AbstractClass* const targetForDir = MapClass::Instance.TryGetCellAt(coordsTarget);
-		auto const targetDir = pThis->GetTargetDirection(targetForDir ? targetForDir: pThis);
+		auto const targetDir = pThis->GetTargetDirection(targetForDir ? targetForDir : pThis);
 		auto const pWH = pWeapon->Warhead;
 		auto const location = pThis->Location;
 		bool const bright = pWeapon->Bright;
@@ -877,7 +910,7 @@ DEFINE_HOOK(0x469EC0, BulletClass_Logics_AirburstWeapon, 0x6)
 		int const radialFireSegments = pTypeExt->AirburstWeapon_RadialFireSegments;
 		int cycledTargetIndex = 0;
 		int radialFireCounter = 0;
-		auto radialFire = RadialFireStruct {};
+		auto radialFire = RadialFireStruct { };
 
 		if (allowRepeatTargets)
 			cycledTargetIndex = random.RandomRanged(0, targets.Count - 1);
